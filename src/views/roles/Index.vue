@@ -1,37 +1,17 @@
 <template>
-  <div class="users">
+  <div class="roles">
     <!-- ### 卡片 -->
     <el-card class="box-card">
       <!-- 头部 -->
       <div slot="header" class="clearfix">
         <!-- ### 添加用户 -->
-        <span>用户列表</span>
+        <span>角色列表</span>
         <el-button
           style="float: right;margin-top:-8px ;padding: 3px 0 width:70px"
           :round="true"
           type="primary"
-          >添加用户</el-button
+          >返回</el-button
         >
-      </div>
-      <!-- 内容筛选 -->
-      <div class="search">
-        <!-- ### input搜索 -->
-        <el-input
-          placeholder="请输入用户名"
-          v-model="uname"
-          class="input-with-select"
-        >
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-        <!-- ### 日期时间选项 -->
-        <el-date-picker
-          v-model="value1"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
-        </el-date-picker>
       </div>
       <!-- ### 用户列表表格 -->
       <el-table :data="tableData" stripe style="width: 100%">
@@ -42,35 +22,19 @@
         ></el-table-column>
         <el-table-column
           prop="role"
-          label="所属角色"
+          label="角色名称"
           width="100"
         ></el-table-column>
         <el-table-column
           prop="username"
-          label="用户名"
+          label="角色描述"
           width="100"
         ></el-table-column>
-        <el-table-column
-          prop="phoneNum"
-          label="手机号"
-          width="140"
-        ></el-table-column>
-        <el-table-column prop="freeze" label="冻结" width="80">
-          <template slot-scope="item">
-            <el-switch
-              v-model="item.row.status"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            ></el-switch>
-          </template>
+        <el-table-column prop="operation" label="操作" width="140">
+          <el-button type="primary" :round="true">分配权限</el-button>
         </el-table-column>
-        <el-table-column
-          prop="time"
-          label="创建时间"
-          width="160"
-        ></el-table-column>
-        <el-table-column prop="operation" label="操作" width="160">
-          <el-button type="primary" :round="true">分配角色</el-button>
+        <el-table-column width="60">
+          <el-button type="primary" icon="el-icon-edit" circle></el-button>
         </el-table-column>
         <el-table-column>
           <el-button type="danger" icon="el-icon-delete" circle></el-button>
@@ -91,7 +55,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-.users {
+.roles {
   width: 100%;
   height: 100%;
   .el-card {
@@ -125,10 +89,8 @@ export default {
       uname: "",
       value: true,
       value1: [],
-      currentPage: 4,
-      item: {
-        row: { status: true },
-      },
+      urrentPage4: 4,
+      currentPage: 5,
       tableData: [
         {
           number: "0396",
