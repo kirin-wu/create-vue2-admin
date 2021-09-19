@@ -1,39 +1,63 @@
 <template>
   <div class="auth">
-    <!-- ### 卡片 -->
-    <el-card class="box-card">
-      <!-- 头部 -->
-      <div slot="header" class="clearfix">
-        <!-- ### 添加用户 -->
-        <span>权限列表</span>
-      </div>
-      <el-input v-model="input" placeholder="请输入关键字进行过滤"></el-input>
+    <MtCard title="权限列表" btnName="权限创建">
+      <el-input placeholder="输入关键字进行过滤" v-model="filterText">
+      </el-input>
+      <!-- 树形权限列表 -->
       <el-tree
         :data="data"
-        :props="defaultProps"
-        @node-click="handleNodeClick"
-      ></el-tree>
-    </el-card>
+        show-checkbox
+        node-key="id"
+        default-expand-all
+        :expand-on-click-node="false"
+        :filter-node-method="filterNode"
+      >
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <el-button type="text" size="mini" @click="() => append(data)">
+              编辑
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              @click="() => remove(node, data)"
+            >
+              删除
+            </el-button>
+          </span>
+        </span>
+      </el-tree>
+    </MtCard>
+    <Edit :state="editstate" @close="editstate = false" />
   </div>
 </template>
 <style lang="scss" scoped>
 .auth {
   width: 100%;
   height: 100%;
-  .el-card {
-    width: 96%;
-    margin: auto;
-    .el-input {
-      margin-bottom: 30px;
-    }
+  .el-input {
+    margin-bottom: 30px;
   }
+}
+.custom-tree-node button {
+  padding: 0 3px;
+}
+::v-deep .el-tree-node__content {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 </style>
 <script>
+import Edit from "./components/Edit.vue";
 export default {
+  components: {
+    Edit,
+  },
   data() {
     return {
-      input: "",
+      editstate: false,
+      filterText: "",
       data: [
         {
           label: " 后台首页",
@@ -133,11 +157,21 @@ export default {
           ],
         },
       ],
-      defaultProps: {
-        children: "children",
-        label: "label",
-      },
     };
+  },
+  methods: {
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    append(data) {
+      console.log("编辑", data);
+      this.editstate = true;
+    },
+    remove(node, data) {
+      console.log("删除", node, data);
+      this.deleteFn();
+    },
   },
 };
 </script>

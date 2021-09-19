@@ -1,6 +1,6 @@
 <template>
-  <div class="rolescreate">
-    <MtCard title="角色创建" url="/roles" btnName="返回">
+  <div class="authsCreate">
+    <MtCard title="权限创建" url="/auths" btnName="返回">
       <MtFrom
         :width="width"
         :formConfig="formConfig"
@@ -11,7 +11,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-.rolesCreate {
+.authsCreate {
   width: 100%;
   height: 100%;
 }
@@ -20,25 +20,43 @@
 export default {
   data() {
     return {
-      width: "80px",
+      width: "140px",
       formConfig: [
         {
-          label: "角色名称",
+          label: "权限名称",
           width: "",
-          field: "role_name",
+          field: "auths_name",
           type: "text",
           rules: [
-            { required: true, message: "角色名称不能为空", trigger: "blur" },
+            { required: true, message: "权限名称不能为空", trigger: "blur" },
             { min: 3, max: 6, message: "长度在 3-6 个字符", trigger: "blur" },
           ],
         },
         {
-          label: "角色描述",
+          label: "权限访问路径",
           width: "",
-          field: "role_desc",
+          field: "auths_url",
           type: "text",
           rules: [
-            { required: true, message: "角色描述不能为空", trigger: "blur" },
+            {
+              required: true,
+              message: "权限访问路径不能为空",
+              trigger: "blur",
+            },
+            { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
+          ],
+        },
+        {
+          label: "权限组件路径",
+          width: "",
+          field: "url",
+          type: "text",
+          rules: [
+            {
+              required: true,
+              message: "权限组件路径不能为空",
+              trigger: "blur",
+            },
             { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
           ],
         },

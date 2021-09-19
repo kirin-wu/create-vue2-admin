@@ -11,9 +11,10 @@ Vue.use(ElementUI);
 // 配置 全局初始化样式
 import "@/assets/css/reset.scss";
 
-// 配置 全局组件 form组件 table组件
+// 配置 全局组件 form组件 table组件 card组件
 import MtFrom from "@/components/form/Index";
 import MtTable from "@/components/table/Index";
+import MtCard from "@/components/card/Index";
 Vue.use({
   install() {
     Vue.component("MtFrom", MtFrom);
@@ -22,6 +23,11 @@ Vue.use({
 Vue.use({
   install() {
     Vue.component("MtTable", MtTable);
+  },
+});
+Vue.use({
+  install() {
+    Vue.component("MtCard", MtCard);
   },
 });
 

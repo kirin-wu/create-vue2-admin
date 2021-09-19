@@ -13,16 +13,11 @@
 
 ## 表单按钮配置 formBtns
 
-props: {
-// 表格通用 label-width
 // width: '0px'
-// 表格配置 一个对象代表后一个表格选项
 // formConfig: [
 // {label: '标题', width: '标题宽度', field: '标题字段', type: '输入框类型', rules: []}
 // ]
 // formBtns: [
-// {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', }
-// {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', }
 // {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', }
 // ]
 

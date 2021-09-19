@@ -2,7 +2,7 @@
   <el-dialog
     title="用户编辑"
     :visible.sync="state"
-    width="30%"
+    width="60%"
     :before-close="handleClose"
     v-if="state"
   >
@@ -12,10 +12,6 @@
       :formBtns="formBtns"
       @submit="submitFn"
     />
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-    </span>
   </el-dialog>
 </template>
 
@@ -29,24 +25,44 @@ export default {
   },
   data() {
     return {
-      width: "80px",
+      width: "120px",
       formConfig: [
         {
-          label: "角色名",
+          label: "权限名称",
           width: "",
-          field: "role_name",
+          field: "auths_name",
           type: "text",
           rules: [
-            { required: true, message: "用户名必须填写", trigger: "blur" },
+            { required: true, message: "权限名称不能为空", trigger: "blur" },
+            { min: 3, max: 6, message: "长度在 3-6 个字符", trigger: "blur" },
           ],
         },
         {
-          label: "角色描述",
+          label: "权限访问路径",
           width: "",
-          field: "role_desc",
+          field: "auths_url",
           type: "text",
           rules: [
-            { required: true, message: "用户名必须填写", trigger: "blur" },
+            {
+              required: true,
+              message: "权限访问路径不能为空",
+              trigger: "blur",
+            },
+            { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
+          ],
+        },
+        {
+          label: "权限组件路径",
+          width: "",
+          field: "url",
+          type: "text",
+          rules: [
+            {
+              required: true,
+              message: "权限组件路径不能为空",
+              trigger: "blur",
+            },
+            { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
           ],
         },
       ],

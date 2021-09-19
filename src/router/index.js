@@ -11,6 +11,7 @@ import UsersCreate from "@/views/users/Create.vue";
 import Roles from "@/views/roles/Index.vue";
 import RolesCreate from "@/views/roles/Create.vue";
 import Auths from "@/views/auths/Index.vue";
+import AuthsCreate from "@/views/auths/Create.vue";
 import Login from "@/views/login/Index.vue";
 
 Vue.use(VueRouter);
@@ -34,6 +35,7 @@ const routes = [
       { path: "roles", component: Roles },
       { path: "roles/create", component: RolesCreate },
       { path: "auths", component: Auths },
+      { path: "auths/create", component: AuthsCreate },
     ],
   },
   {

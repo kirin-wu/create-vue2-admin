@@ -31,6 +31,7 @@
     </el-card>
     <!-- ## 分配权限弹框EditAuth 编辑Edit -->
     <Edit :state="editstate" @close="editstate = false" />
+    <EditAuth :state="editauthstate" @close="editauthstate = false" />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -64,9 +65,11 @@
 <script>
 import tableData from "~mock/roles/index";
 import Edit from "./components/Edit.vue";
+import EditAuth from "./components/EditAuth.vue";
 export default {
   components: {
     Edit,
+    EditAuth,
   },
   data() {
     return {
@@ -74,6 +77,7 @@ export default {
       currentPage: 5,
       // 分配权限 编辑 删除
       editstate: false,
+      editauthstate: false,
       columns: [
         { title: "编号", filed: "id" },
         { title: "角色名称", filed: "role_name" },
@@ -88,6 +92,7 @@ export default {
               type: "primary",
               click: (row) => {
                 console.log("分配", row);
+                this.editauthstate = true;
               },
             },
             {
@@ -105,6 +110,7 @@ export default {
               type: "danger",
               click: (row) => {
                 console.log("编辑", row);
+                this.deleteFn(row);
               },
             },
           ],
