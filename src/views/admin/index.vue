@@ -150,9 +150,8 @@
         </el-submenu>
       </el-menu>
     </div>
-    <!-- #admin main -->
+    <!-- #admin .main -->
     <div class="main">
-      <!-- #admin .main .top -->
       <div class="top">
         <div class="left">
           <div class="btn" @click="changeMenu">
@@ -172,11 +171,11 @@
           <i class="el-icon-switch-button"></i>
         </div>
       </div>
-      <!-- #admin .main .content -->
       <div class="content">
         <router-view />
       </div>
     </div>
+    <!-- #admin main -->
   </div>
 </template>
 <style lang="scss" scoped>
@@ -189,7 +188,6 @@
   width: 100%;
   height: 100%;
   display: flex;
-  /* #admin menu */
   .menu {
     width: 200px;
     background-color: #263445;
@@ -205,7 +203,6 @@
       vertical-align: middle;
     }
   }
-  /* #admin main */
   .main {
     flex: 1;
     display: flex;
@@ -270,12 +267,19 @@
 }
 </style>
 <script>
+// import Menu from "@/components/menu/Index.vue";
+// import TOP from "@/components/top/Index.vue";
+// import { Menu, Main } from "@/components";
 export default {
+  components: {
+    // Menu,
+    // Main,
+  },
   data() {
     return {
+      menuWidth: "200px",
       isCollapse: false,
       menuIcon: "el-icon-s-fold",
-      menuWidth: "200px",
     };
   },
   methods: {

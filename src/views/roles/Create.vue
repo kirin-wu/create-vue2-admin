@@ -10,7 +10,8 @@
           style="float: right;margin-top:-8px ;padding: 3px 0 width:70px"
           :round="true"
           type="primary"
-          >创建</el-button
+          @click="jump('/roles')"
+          >返回</el-button
         >
       </div>
       <!-- 表单 -->

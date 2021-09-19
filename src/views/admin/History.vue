@@ -1,22 +1,34 @@
 <template>
-  <div class="roles">
+  <div class="history">
     <!-- ### 卡片 -->
     <el-card class="box-card">
       <!-- 头部 -->
       <div slot="header" class="clearfix">
         <!-- ### 添加用户 -->
-        <span>角色列表</span>
-        <el-button
-          style="float: right;margin-top:-8px ;padding: 3px 0 width:70px"
-          :round="true"
-          type="primary"
-          @click="jump('/roles/create')"
-          >创建角色</el-button
+        <span>访客纪录</span>
+      </div>
+      <!-- 内容筛选 -->
+      <div class="search">
+        <!-- ### input搜索 -->
+        <el-input
+          placeholder="请输入用户名"
+          v-model="uname"
+          class="input-with-select"
         >
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+        <!-- ### 登录日期时间选项 -->
+        <el-date-picker
+          v-model="value1"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="登录开始日期"
+          end-placeholder="登录结束日期"
+        >
+        </el-date-picker>
       </div>
       <!-- ### 用户列表表格 -->
       <MtTable :tableData="tableData" :columns="columns" />
-
       <!-- ### 分页 -->
       <el-pagination
         @size-change="handleSizeChange"
@@ -29,12 +41,10 @@
       >
       </el-pagination>
     </el-card>
-    <!-- ## 分配权限弹框EditAuth 编辑Edit -->
-    <Edit :state="editstate" @close="editstate = false" />
   </div>
 </template>
 <style lang="scss" scoped>
-.roles {
+.history {
   width: 100%;
   height: 100%;
   .el-card {
@@ -62,54 +72,27 @@
 }
 </style>
 <script>
-import tableData from "~mock/roles/index";
-import Edit from "./components/Edit.vue";
+import MtTable from "@/components/table/Index.vue";
+import tableData from "~mock/admin/history";
 export default {
   components: {
-    Edit,
+    MtTable,
   },
   data() {
     return {
-      // 分页数据
-      currentPage: 5,
-      // 分配权限 编辑 删除
-      editstate: false,
+      uname: "",
+      value1: [],
+      currentPage: 10,
+      // 表格列
       columns: [
         { title: "编号", filed: "id" },
-        { title: "角色名称", filed: "role_name" },
-        { title: "角色描述", filed: "role_desc" },
-        {
-          title: "操作",
-          width: "360",
-          type: "btn",
-          payload: [
-            {
-              name: "分配权限",
-              type: "primary",
-              click: (row) => {
-                console.log("分配", row);
-              },
-            },
-            {
-              // name: "编辑",
-              icon: "el-icon-edit",
-              type: "success",
-              click: (row) => {
-                console.log("编辑", row);
-                this.editstate = true;
-              },
-            },
-            {
-              // name: "删除",
-              icon: "el-icon-delete",
-              type: "danger",
-              click: (row) => {
-                console.log("编辑", row);
-              },
-            },
-          ],
-        },
+        { title: "用户", filed: "title" },
+        { title: "登录方式", filed: "type" },
+        { title: "登录城市", filed: "city" },
+        { title: "登录时间", filed: "time" },
+        { title: "上一次登录时间", filed: "nexttime" },
       ],
+      // 表格数据
       tableData: tableData.data,
     };
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="users">
-    <!-- ### 卡片 -->
+    <!-- # 卡片 -->
     <el-card class="box-card">
       <!-- 头部 -->
       <div slot="header" class="clearfix">
@@ -10,6 +10,7 @@
           style="float: right;margin-top:-8px ;padding: 3px 0 width:70px"
           :round="true"
           type="primary"
+          @click="jump('/users/create')"
           >添加用户</el-button
         >
       </div>
@@ -34,48 +35,7 @@
         </el-date-picker>
       </div>
       <!-- ### 用户列表表格 -->
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column
-          prop="number"
-          label="编号"
-          width="80"
-        ></el-table-column>
-        <el-table-column
-          prop="role"
-          label="所属角色"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="username"
-          label="用户名"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="phoneNum"
-          label="手机号"
-          width="140"
-        ></el-table-column>
-        <el-table-column prop="freeze" label="冻结" width="80">
-          <template slot-scope="item">
-            <el-switch
-              v-model="item.row.status"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            ></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="time"
-          label="创建时间"
-          width="160"
-        ></el-table-column>
-        <el-table-column prop="operation" label="操作" width="160">
-          <el-button type="primary" :round="true">分配角色</el-button>
-        </el-table-column>
-        <el-table-column>
-          <el-button type="danger" icon="el-icon-delete" circle></el-button>
-        </el-table-column>
-      </el-table>
+      <MtTable :tableData="tableData" :columns="columns" />
       <!-- ### 分页 -->
       <el-pagination
         @size-change="handleSizeChange"
@@ -88,6 +48,9 @@
       >
       </el-pagination>
     </el-card>
+    <!-- #编辑弹框 -->
+    <Edit :state="editstate" @close="editstate = false" />
+    <EditRoles :state="editrolesstate" @close="editrolesstate = false" />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -119,53 +82,81 @@
 }
 </style>
 <script>
+import MtTable from "@/components/table/Index.vue";
+import tableData from "~mock/users/index";
+import Edit from "./components/Edit.vue";
+import EditRoles from "./components/EditRoles.vue";
 export default {
+  components: {
+    MtTable,
+    Edit,
+    EditRoles,
+  },
   data() {
     return {
+      // 编辑弹框数据
+      editstate: false,
+      editrolesstate: false,
       uname: "",
-      value: true,
       value1: [],
       currentPage: 4,
       item: {
         row: { status: true },
       },
-      tableData: [
+      // 表格列
+      // 编号 所属角色 用户名 手机号 冻结 创建时间 操作
+      columns: [
+        { title: "编号", filed: "id" },
+        { title: "所属角色", filed: "role_name" },
+        { title: "用户名", filed: "uname" },
+        { title: "手机号", filed: "mobile" },
         {
-          number: "0396",
-          role: "普通用户",
-          username: "神龙教主",
-          phoneNum: 13788888888,
-          time: "2020-09-16 19:29:30",
+          title: "冻结",
+          type: "switch",
+          payload: {
+            filed: "state",
+            change: (row) => console.log("冻结", row),
+          },
         },
+        { title: "创建时间", filed: "create_time", width: "180" },
         {
-          number: "0397",
-          role: "普通用户",
-          username: "神龙教主",
-          phoneNum: 13788888888,
-          time: "2020-09-16 19:29:30",
-        },
-        {
-          number: "0398",
-          role: "普通用户",
-          username: "神龙教主",
-          phoneNum: 13788888888,
-          time: "2020-09-16 19:29:30",
-        },
-        {
-          number: "0399",
-          role: "普通用户",
-          username: "神龙教主",
-          phoneNum: 13788888888,
-          time: "2020-09-16 19:29:30",
-        },
-        {
-          number: "0400",
-          role: "普通用户",
-          username: "神龙教主",
-          phoneNum: 13788888888,
-          time: "2020-09-16 19:29:30",
+          title: "操作",
+          width: "260",
+          type: "btn",
+          payload: [
+            {
+              name: "修改用户",
+              type: "primary",
+              click: (row) => {
+                console.log("修改", row);
+                // 1.显示数据
+                this.editstate = true;
+                // 2.
+              },
+            },
+            {
+              name: "分配角色",
+              type: "success",
+              click: (row) => {
+                console.log("分配", row);
+                // 1.显示数据
+                this.editrolesstate = true;
+                // 2.
+              },
+            },
+            {
+              name: "删除",
+              type: "danger",
+              click: (row) => {
+                console.log("删除", row);
+                this.deleteFn(row);
+              },
+            },
+          ],
         },
       ],
+      // 表格数据
+      tableData: tableData.data,
     };
   },
   methods: {
@@ -174,6 +165,26 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    deleteFn(row) {
+      console.log("删除", row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };
