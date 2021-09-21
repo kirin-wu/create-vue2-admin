@@ -106,19 +106,19 @@ export default {
       // 表格列
       // 编号 所属角色 用户名 手机号 冻结 创建时间 操作
       columns: [
-        { title: "编号", filed: "id" },
-        { title: "所属角色", filed: "role_name" },
-        { title: "用户名", filed: "uname" },
-        { title: "手机号", filed: "mobile" },
+        { title: "编号", field: "id" },
+        { title: "所属角色", field: "role_name" },
+        { title: "用户名", field: "uname" },
+        { title: "手机号", field: "mobile" },
         {
           title: "冻结",
           type: "switch",
           payload: {
-            filed: "state",
+            field: "state",
             change: (row) => console.log("冻结", row),
           },
         },
-        { title: "创建时间", filed: "create_time", width: "180" },
+        { title: "创建时间", field: "create_time", width: "180" },
         {
           title: "操作",
           width: "260",

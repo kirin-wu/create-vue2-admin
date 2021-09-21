@@ -13,6 +13,7 @@
     <!-- card header -->
     <!-- card content -->
     <slot></slot>
+    <slot name="page"></slot>
   </el-card>
 </template>
 

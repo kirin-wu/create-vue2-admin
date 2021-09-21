@@ -3,16 +3,22 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
 import Admin from "../views/admin/Index.vue";
+import Login from "@/views/login/Index.vue";
 import Test from "@/views/admin/Test.vue";
 import Welcome from "../views/admin/Welcome.vue";
 import History from "../views/admin/History.vue";
+
 import Users from "@/views/users/Index.vue";
 import UsersCreate from "@/views/users/Create.vue";
+
 import Roles from "@/views/roles/Index.vue";
 import RolesCreate from "@/views/roles/Create.vue";
+
 import Auths from "@/views/auths/Index.vue";
 import AuthsCreate from "@/views/auths/Create.vue";
-import Login from "@/views/login/Index.vue";
+
+import Cates from "@/views/cates/Index.vue";
+import Stores from "@/views/stores/Index.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +42,8 @@ const routes = [
       { path: "roles/create", component: RolesCreate },
       { path: "auths", component: Auths },
       { path: "auths/create", component: AuthsCreate },
+      { path: "cates", component: Cates },
+      { path: "stores", component: Stores },
     ],
   },
   {

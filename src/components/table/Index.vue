@@ -1,35 +1,69 @@
 <template>
-  <el-table :data="tableData" stripe style="width: 100%">
+  <el-table row-key="cat_id" :data="tableData" stripe style="width: 100%">
     <template v-for="(item, index) in columns">
-      <!-- ###默认 -->
+      <!-- ##默认 -->
       <el-table-column
+        :fixed="item.fixed"
         :key="index"
-        v-if="item.filed"
+        v-if="item.field"
         :label="item.title"
-        :prop="item.filed"
+        :prop="item.field"
         :width="item.width"
       >
       </el-table-column>
-      <!-- ###默认end -->
-      <!-- ###自定义 -->
+      <!-- ##默认end -->
+      <!-- ##自定义 -->
       <el-table-column
+        :fixed="item.fixed"
         :key="index"
         :label="item.title"
         :width="item.width"
         v-else
       >
         <template slot-scope="scope">
-          <!-- ####switch -->
+          <!-- switch -->
           <el-switch
             v-if="item.type === 'switch'"
-            v-model="scope.row[item.payload.filed]"
+            v-model="scope.row[item.payload.field]"
             @change="item.payload.change(scope.row)"
             active-color="#13ce66"
             inactive-color="#ff4949"
           >
           </el-switch>
+          <!--  end_switch -->
 
-          <!-- ####btn -->
+          <!-- tips -->
+          <el-tooltip
+            v-if="item.type === 'tips'"
+            class="item"
+            effect="dark"
+            :content="scope.row[item.payload.field]"
+            placement="bottom-end"
+          >
+            <span> {{ scope.row[item.payload.field] | substrFilter(8) }}</span>
+          </el-tooltip>
+          <!-- endtips -->
+
+          <!--  img -->
+          <img
+            v-if="item.type === 'img'"
+            :src="scope.row[item.payload.field]"
+            alt="img"
+          />
+          <!--  end_img -->
+          <!--  tag -->
+          <el-tag
+            v-if="item.type === 'tag'"
+            :type="
+              item.payload.color ||
+              scope.row[item.payload.field] | elTagTypeFilter
+            "
+          >
+            {{ scope.row[item.payload.field] | cateFilter }}
+          </el-tag>
+
+          <!-- end_tag -->
+          <!-- btn -->
           <template v-if="item.type === 'btn'">
             <el-button
               size="mini"
@@ -44,7 +78,7 @@
               <i v-else :class="item.icon"></i>
             </el-button>
           </template>
-          <!-- ####btn -->
+          <!-- end_btn -->
         </template>
       </el-table-column>
     </template>
@@ -61,7 +95,7 @@ export default {
     },
     columns: {
       /*
-        {title,filed,...}
+        {title,field,...}
         */
       required: true,
       type: Array,

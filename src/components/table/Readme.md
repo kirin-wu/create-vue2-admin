@@ -4,9 +4,11 @@
 
 # 表格列 表格数据
 
-## columns:[]
+## columns:[],
 
 ## tableData: tableData.data,
+
+### import tableData from "~mock/users/index";
 
 ```columns: [
 { title: "编号", filed: "id" },
