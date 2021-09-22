@@ -2,6 +2,7 @@
   <div class="goods">
     <MtCard title="商品创建" url="/goods/create" btnName="创建">
       <MtTable :tableData="tableData" :columns="columns" />
+      <MtPage v-slot:page />
     </MtCard>
   </div>
 </template>
@@ -23,7 +24,13 @@ export default {
             field: "img",
           },
         },
-        { title: "标题", field: "title" },
+        {
+          title: "标题",
+          type: "tips",
+          payload: {
+            field: "title",
+          },
+        },
         { title: "库存", field: "repertory" },
         { title: "市场价", field: "market_price" },
         { title: "销售价", field: "sell_price" },
@@ -40,24 +47,15 @@ export default {
           title: "操作",
           width: "260",
           type: "btn",
+          fixed: "right",
           payload: [
             {
-              name: "修改用户",
+              name: "修改商品",
               type: "primary",
               click: (row) => {
                 console.log("修改", row);
                 // 1.显示数据
                 this.editstate = true;
-                // 2.
-              },
-            },
-            {
-              name: "分配角色",
-              type: "success",
-              click: (row) => {
-                console.log("分配", row);
-                // 1.显示数据
-                this.editrolesstate = true;
                 // 2.
               },
             },

@@ -18,10 +18,16 @@ import Auths from "@/views/auths/Index.vue";
 import AuthsCreate from "@/views/auths/Create.vue";
 
 import Cates from "@/views/cates/Index.vue";
+import CatesCreate from "@/views/cates/Create.vue";
+
 import Goods from "@/views/goods/Index.vue";
+import GoodsCreate from "@/views/goods/Create.vue";
 
 import Stores from "@/views/stores/Index.vue";
 import StoresCreate from "@/views/stores/Create.vue";
+
+import Orders from "@/views/orders/Index.vue";
+import OrdersCreate from "@/views/orders/Create.vue";
 
 Vue.use(VueRouter);
 
@@ -46,9 +52,13 @@ const routes = [
       { path: "auths", component: Auths },
       { path: "auths/create", component: AuthsCreate },
       { path: "cates", component: Cates },
+      { path: "cates/create", component: CatesCreate },
       { path: "goods", component: Goods },
+      { path: "goods/create", component: GoodsCreate },
       { path: "stores", component: Stores },
       { path: "stores/create", component: StoresCreate },
+      { path: "orders", component: Orders },
+      { path: "orders/create", component: OrdersCreate },
     ],
   },
   {

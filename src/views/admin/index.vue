@@ -20,12 +20,12 @@
             <span slot="title">后台首页</span>
           </template>
 
-          <el-menu-item index="1-1">
+          <el-menu-item index="1-1" @click="jump('/welcome')">
             <!-- <i class="el-icon-setting"></i> -->
             <i class="iconfont icon-shezhi"></i>
             欢迎页
           </el-menu-item>
-          <el-menu-item index="1-2">
+          <el-menu-item index="1-2" @click="jump('/history')">
             <i class="iconfont icon-shezhi"></i>
             访客记录
           </el-menu-item>
@@ -37,11 +37,11 @@
             <span slot="title">分类管理</span>
           </template>
 
-          <el-menu-item index="2-1">
+          <el-menu-item index="2-1" @click="jump('/cates')">
             <i class="iconfont icon-shezhi"></i>
             分类列表
           </el-menu-item>
-          <el-menu-item index="2-2">
+          <el-menu-item index="2-2" @click="jump('/cates/create')">
             <i class="iconfont icon-shezhi"></i>
             分类创建
           </el-menu-item>
@@ -52,11 +52,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">门店管理</span>
           </template>
-          <el-menu-item index="3-1">
+          <el-menu-item index="3-1" @click="jump('/stores')">
             <i class="iconfont icon-shezhi"></i>
             商品类型
           </el-menu-item>
-          <el-menu-item index="3-2">
+          <el-menu-item index="3-2" @click="jump('/stores/create')">
             <i class="iconfont icon-shezhi"></i>
             类型创建
           </el-menu-item>
@@ -75,11 +75,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">门店商品</span>
           </template>
-          <el-menu-item index="4-1">
+          <el-menu-item index="4-1" @click="jump('/goods')">
             <i class="iconfont icon-shezhi"></i>
             商品列表
           </el-menu-item>
-          <el-menu-item index="4-2">
+          <el-menu-item index="4-2" @click="jump('/goods/create')">
             <i class="iconfont icon-shezhi"></i>
             商品创建
           </el-menu-item>
@@ -94,11 +94,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">订单管理</span>
           </template>
-          <el-menu-item index="5-1">
+          <el-menu-item index="5-1" @click="jump('/orders')">
             <i class="iconfont icon-shezhi"></i>
             订单管理
           </el-menu-item>
-          <el-menu-item index="5-2">
+          <el-menu-item index="5-2" @click="jump('/orders/create')">
             <i class="iconfont icon-shezhi"></i>
             订单回收站
           </el-menu-item>
@@ -113,11 +113,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">用户管理</span>
           </template>
-          <el-menu-item index="6-1">
+          <el-menu-item index="6-1" @click="jump('/users')">
             <i class="iconfont icon-shezhi"></i>
             用户列表
           </el-menu-item>
-          <el-menu-item index="6-2">
+          <el-menu-item index="6-2" @click="jump('/users/create')">
             <i class="iconfont icon-shezhi"></i>
             用户创建
           </el-menu-item>
@@ -128,11 +128,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">角色管理</span>
           </template>
-          <el-menu-item index="7-1">
+          <el-menu-item index="7-1" @click="jump('/roles')">
             <i class="iconfont icon-shezhi"></i>
             角色列表
           </el-menu-item>
-          <el-menu-item index="7-2">
+          <el-menu-item index="7-2" @click="jump('/roles/create')">
             <i class="iconfont icon-shezhi"></i>
             角色创建
           </el-menu-item>
@@ -143,9 +143,13 @@
             <i class="el-icon-menu"></i>
             <span slot="title">权限管理</span>
           </template>
-          <el-menu-item index="8-1">
+          <el-menu-item index="8-1" @click="jump('/auths')">
             <i class="iconfont icon-shezhi"></i>
             权限列表
+          </el-menu-item>
+          <el-menu-item index="8-1" @click="jump('/auths/create')">
+            <i class="iconfont icon-shezhi"></i>
+            权限创建
           </el-menu-item>
         </el-submenu>
       </el-menu>

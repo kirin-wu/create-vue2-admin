@@ -52,7 +52,7 @@
           />
           <!--  end_img -->
           <!--  tag -->
-          <el-tag
+          <!-- <el-tag
             v-if="item.type === 'tag'"
             :type="
               item.payload.color ||
@@ -60,6 +60,20 @@
             "
           >
             {{ scope.row[item.payload.field] | cateFilter }}
+          </el-tag> -->
+
+          <el-tag
+            v-if="item.type === 'tag'"
+            :type="
+              filterFn(
+                'elTagTypeFilter',
+                item.payload.color || scope.row[item.payload.field]
+              )
+            "
+          >
+            {{
+              filterFn(item.payload.filterName, scope.row[item.payload.field])
+            }}
           </el-tag>
 
           <!-- end_tag -->
@@ -87,6 +101,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 export default {
   props: {
     tableData: {
@@ -103,6 +118,12 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    filterFn(filterNanme, ...params) {
+      let tempFn = Vue.filter(filterNanme);
+      return tempFn(...params);
+    },
   },
 };
 </script>

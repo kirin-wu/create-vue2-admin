@@ -15,6 +15,7 @@ for (let i = 1; i <= 5; i++) {
       market_price: "@integer(100, 19999)",
       sell_price: "@integer(100, 19999)",
       work: "@datetime",
+      state: [true, false, true, false, true, false, true, false][random(0, 7)],
     })
   );
 }

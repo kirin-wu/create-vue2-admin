@@ -43,6 +43,7 @@ export default {
           payload: {
             field: "level",
             // color: "success",
+            filterName: "cateFilter",
           },
         },
       ],

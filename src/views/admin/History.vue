@@ -85,12 +85,12 @@ export default {
       currentPage: 10,
       // 表格列
       columns: [
-        { title: "编号", filed: "id" },
-        { title: "用户", filed: "title" },
-        { title: "登录方式", filed: "type" },
-        { title: "登录城市", filed: "city" },
-        { title: "登录时间", filed: "time" },
-        { title: "上一次登录时间", filed: "nexttime" },
+        { title: "编号", field: "id" },
+        { title: "用户", field: "title" },
+        { title: "登录方式", field: "type" },
+        { title: "登录城市", field: "city" },
+        { title: "登录时间", field: "time" },
+        { title: "上一次登录时间", field: "nexttime" },
       ],
       // 表格数据
       tableData: tableData.data,

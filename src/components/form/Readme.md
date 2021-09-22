@@ -68,7 +68,7 @@ pwd: "",
 };
 },
 methods: {
-submit2Fn(formData) {
+submitFn(formData) {
 console.log("提交了", formData);
 },
 },
