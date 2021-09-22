@@ -1,0 +1,66 @@
+<script src="https://map.qq.com/api/js?v=2.exp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&libraries=place"></script>
+<p style="margin:5px">
+    <input style="width:200px;padding:3px 4px;" type="text" id="place" /> <span>()</span><br><br>
+    
+    
+</p>
+<div id="container" style="width: 700px; height: 500px;"></div>   
+<script>
+    var map = new qq.maps.Map(document.getElementById("container"), {
+            center: new qq.maps.LatLng(39.916527, 116.397128),
+            zoom: 13
+    });
+        //实例化自动完成
+        var ap = new qq.maps.place.Autocomplete(document.getElementById('place'));
+        var keyword = "";
+        //调用Poi检索类。用于进行本地检索、周边检索等服务。
+        var searchService = new qq.maps.SearchService({
+            complete: function (results) {
+                if (results.type === "CITY_LIST") {
+                    searchService.setLocation(results.detail.cities[0].cityName);
+                    searchService.search(keyword);
+                    return;
+                }
+                var pois = results.detail.pois;
+                var latlngBounds = new qq.maps.LatLngBounds();
+                for (var i = 0, l = pois.length; i < l; i++) {
+                    var poi = pois[i];
+                    latlngBounds.extend(poi.latLng);
+                    // var marker = new qq.maps.Marker({
+                    //     map: map,
+                    //     position: poi.latLng
+                    // });
+
+                    // marker.setTitle(poi.name);
+                }
+                map.fitBounds(latlngBounds);
+            }
+        });
+        //添加监听事件
+        qq.maps.event.addListener(ap, "confirm", function (res) {
+            keyword = res.value;
+            searchService.search(keyword);
+        });
+        //添加dom监听事件
+        let markersArray =[]
+            qq.maps.event.addDomListener(map, 'click', function (event) {
+                // addMarker(event.latLng);
+                // 全部清除 增加新的
+                if (markersArray) {
+                    for (i in markersArray) {
+                        markersArray[i].setMap(null);
+                    }
+                    markersArray.length = 0;
+                }
+                // 增加新的
+                let location = event.latLng
+                var marker = new qq.maps.Marker({
+                    position: location,
+                    map: map
+                });
+                markersArray.push(marker);
+                // 显示坐标 
+                document.querySelector('span').innerHTML= location
+            }); 
+        
+</script>

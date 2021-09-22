@@ -4,7 +4,7 @@
 :width="width"
 :formConfig="formConfig"
 :formBtns="formBtns"
-@submit="submit2Fn"
+@submit="submitFn"
 />
 
 # 数据

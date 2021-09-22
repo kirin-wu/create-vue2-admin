@@ -9,9 +9,18 @@
       :rules="item.rules"
     >
       <!-- ##输入框 -->
+      <!-- ###级联选择器 -->
+      <el-cascader
+        v-if="item.type === 'cascader'"
+        :options="item.payload.options"
+        v-model="formData[item.field]"
+        @change="item.payload.change"
+      ></el-cascader>
+      <!-- ###级联选择器 -->
       <!-- ###文本输入框 -->
       <el-input
         type="text"
+        :style="{ width: item.payload ? item.payload.width : '100%' }"
         :disabled="item.disabled"
         v-model="formData[item.field]"
         v-if="item.type === 'text'"

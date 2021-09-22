@@ -35,8 +35,8 @@ export default {
       // ###分页
       currentPage: 5,
       columns: [
-        { title: "分类编号", filed: "cat_id" },
-        { title: "分类名称", filed: "name" },
+        { title: "分类编号", field: "cat_id" },
+        { title: "分类名称", field: "name" },
         {
           title: "分类层级",
           type: "tag",

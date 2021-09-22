@@ -79,9 +79,9 @@ export default {
       editstate: false,
       editauthstate: false,
       columns: [
-        { title: "编号", filed: "id" },
-        { title: "角色名称", filed: "role_name" },
-        { title: "角色描述", filed: "role_desc" },
+        { title: "编号", field: "id" },
+        { title: "角色名称", field: "role_name" },
+        { title: "角色描述", field: "role_desc" },
         {
           title: "操作",
           width: "360",

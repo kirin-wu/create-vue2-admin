@@ -1,6 +1,6 @@
 <template>
   <div class="stores">
-    <MtCard title="门店列表" url="/stroes/create" btnName="创建">
+    <MtCard title="门店列表" url="/stores/create" btnName="创建">
       <MtTable :tableData="tableData" :columns="columns"
     /></MtCard>
     <MtPage v-slot:page :currentPage="currentPage" />
@@ -9,7 +9,6 @@
 
 <script>
 import tableData from "~mock/stores/index.js";
-console.log(tableData);
 export default {
   data() {
     return {

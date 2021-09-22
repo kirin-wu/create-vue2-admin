@@ -34,7 +34,7 @@
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span slot="title">商品分类</span>
+            <span slot="title">分类管理</span>
           </template>
 
           <el-menu-item index="2-1">
@@ -50,7 +50,7 @@
         <el-submenu index="3">
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span slot="title">商品规格</span>
+            <span slot="title">门店管理</span>
           </template>
           <el-menu-item index="3-1">
             <i class="iconfont icon-shezhi"></i>
@@ -73,7 +73,7 @@
         <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span slot="title">商品管理</span>
+            <span slot="title">门店商品</span>
           </template>
           <el-menu-item index="4-1">
             <i class="iconfont icon-shezhi"></i>

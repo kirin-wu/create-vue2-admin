@@ -1,0 +1,27 @@
+<script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77"></script>
+<div id="container" style="width: 700px; height: 500px;">
+    
+</div>
+<script>
+    var center = new TMap.LatLng(39.984104, 116.307503);
+        //初始化地图
+        var map = new TMap.Map("container", {
+            rotation: 20,//设置地图旋转角度
+            pitch: 30, //设置俯仰角度（0~45）
+            zoom: 12,//设置地图缩放级别
+            center: center//设置地图中心点坐标
+        });
+        //初始化marker
+            var marker = new TMap.MultiMarker({
+                id: "marker-layer", //图层id
+                map: map,
+                styles: { //点标注的相关样式
+                    "marker": new TMap.MarkerStyle({
+                        "width": 25,
+                        "height": 35,
+                        "anchor": { x: 16, y: 32 },
+                        "src": "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png"
+                    })
+                },
+            })
+</script>
