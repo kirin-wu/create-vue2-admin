@@ -1,6 +1,6 @@
 <template>
   <div class="orders">
-    <MtCard title="导出数据" url="/roles" btnName="返回">
+    <MtCard title="导出数据" url="/orders/total" btnName="图表">
       <div class="search">
         <!-- ### input搜索 -->
         <el-input

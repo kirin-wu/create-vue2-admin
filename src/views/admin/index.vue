@@ -98,13 +98,9 @@
             <i class="iconfont icon-shezhi"></i>
             订单管理
           </el-menu-item>
-          <el-menu-item index="5-2" @click="jump('/orders/create')">
+          <el-menu-item index="5-2" @click="jump('/orders/total')">
             <i class="iconfont icon-shezhi"></i>
-            订单回收站
-          </el-menu-item>
-          <el-menu-item index="5-3">
-            <i class="iconfont icon-shezhi"></i>
-            订单统计
+            订单图表
           </el-menu-item>
         </el-submenu>
         <!-- ## 用户管理 -->
@@ -164,8 +160,15 @@
           <div class="breadcrumb">
             <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-              <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+              <el-breadcrumb-item :key="name1"
+                ><a href="/">{{ name1 }}</a></el-breadcrumb-item
+              >
+
+              <transition enter-active-class="animated fadeInRight">
+                <el-breadcrumb-item :key="name2">{{
+                  name2
+                }}</el-breadcrumb-item>
+              </transition>
             </el-breadcrumb>
           </div>
         </div>
@@ -281,6 +284,8 @@ export default {
   },
   data() {
     return {
+      name1: "",
+      name2: "",
       menuWidth: "200px",
       isCollapse: false,
       menuIcon: "el-icon-s-fold",
@@ -299,6 +304,21 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    // ##监控路由变化
+  },
+  watch: {
+    // $route(newDate) {
+    //   console.log(newDate);
+    //   this.name1 = newDate.meta.name1;
+    //   this.name2 = newDate.meta.name2;
+    // },
+    $route: {
+      handler(newDate) {
+        this.name2 = newDate.meta.name2;
+        this.name1 = newDate.meta.name1;
+      },
+      immediate: true,
     },
   },
 };

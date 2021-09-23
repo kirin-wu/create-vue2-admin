@@ -3,10 +3,13 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
 import Admin from "../views/admin/Index.vue";
-import Login from "@/views/login/Index.vue";
 import Test from "@/views/admin/Test.vue";
 import Welcome from "../views/admin/Welcome.vue";
 import History from "../views/admin/History.vue";
+
+import Login from "@/views/login/Index.vue";
+import LoginMobile from "@/views/login/Mobile.vue";
+import LoginToken from "@/views/login/Token";
 
 import Users from "@/views/users/Index.vue";
 import UsersCreate from "@/views/users/Create.vue";
@@ -27,7 +30,7 @@ import Stores from "@/views/stores/Index.vue";
 import StoresCreate from "@/views/stores/Create.vue";
 
 import Orders from "@/views/orders/Index.vue";
-import OrdersCreate from "@/views/orders/Create.vue";
+import OrdersTotal from "@/views/orders/Total.vue";
 
 Vue.use(VueRouter);
 
@@ -42,29 +45,102 @@ const routes = [
     path: "/",
     component: Admin,
     children: [
-      { path: "welcome", alias: "/", component: Welcome },
       { path: "test", component: Test },
-      { path: "history", component: History },
-      { path: "users", component: Users },
-      { path: "users/create", component: UsersCreate },
-      { path: "roles", component: Roles },
-      { path: "roles/create", component: RolesCreate },
-      { path: "auths", component: Auths },
-      { path: "auths/create", component: AuthsCreate },
-      { path: "cates", component: Cates },
-      { path: "cates/create", component: CatesCreate },
-      { path: "goods", component: Goods },
-      { path: "goods/create", component: GoodsCreate },
-      { path: "stores", component: Stores },
-      { path: "stores/create", component: StoresCreate },
-      { path: "orders", component: Orders },
-      { path: "orders/create", component: OrdersCreate },
+
+      {
+        path: "welcome",
+        alias: "/",
+        component: Welcome,
+        meta: { name1: "后台首页", name2: "后台首页" },
+      },
+      {
+        path: "history",
+        component: History,
+        meta: { name1: "后台首页", name2: "访客记录" },
+      },
+      {
+        path: "users",
+        component: Users,
+        meta: { name1: "用户管理", name2: "用户列表" },
+      },
+      {
+        path: "users/create",
+        component: UsersCreate,
+        meta: { name1: "用户管理", name2: "用户创建" },
+      },
+      {
+        path: "roles",
+        component: Roles,
+        meta: { name1: "角色管理", name2: "角色列表" },
+      },
+      {
+        path: "roles/create",
+        component: RolesCreate,
+        meta: { name1: "角色管理", name2: "角色创建" },
+      },
+      {
+        path: "auths",
+        component: Auths,
+        meta: { name1: "权限管理", name2: "权限列表" },
+      },
+      {
+        path: "auths/create",
+        component: AuthsCreate,
+        meta: { name1: "权限管理", name2: "权限创建" },
+      },
+      {
+        path: "cates",
+        component: Cates,
+        meta: { name1: "分类管理", name2: "分类列表" },
+      },
+      {
+        path: "cates/create",
+        component: CatesCreate,
+        meta: { name1: "分类管理", name2: "分类创建" },
+      },
+      {
+        path: "goods",
+        component: Goods,
+        meta: { name1: "门店商品", name2: "商品列表" },
+      },
+      {
+        path: "goods/create",
+        component: GoodsCreate,
+        meta: { name1: "门店商品", name2: "商品创建" },
+      },
+      {
+        path: "stores",
+        component: Stores,
+        meta: { name1: "门店管理", name2: "门店列表" },
+      },
+      {
+        path: "stores/create",
+        component: StoresCreate,
+        meta: { name1: "门店管理", name2: "门店创建" },
+      },
+      {
+        path: "orders",
+        component: Orders,
+        meta: { name1: "订单管理", name2: "订单列表" },
+      },
+      {
+        path: "orders/total",
+        component: OrdersTotal,
+        meta: { name1: "订单管理", name2: "订单列表" },
+      },
     ],
   },
   {
     path: "/login",
-    name: "Login",
     component: Login,
+  },
+  {
+    path: "/login/sms",
+    component: LoginMobile,
+  },
+  {
+    path: "/login/token",
+    component: LoginToken,
   },
   {
     path: "/home",

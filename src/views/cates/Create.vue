@@ -1,6 +1,6 @@
 <template>
   <div class="authsCreate">
-    <MtCard title="权限创建" url="/auths" btnName="返回">
+    <MtCard title="分类创建" url="/cates" btnName="返回">
       <MtFrom
         :width="width"
         :formConfig="formConfig"
@@ -23,38 +23,38 @@ export default {
       width: "140px",
       formConfig: [
         {
-          label: "权限名称",
+          label: "分类名称",
           width: "",
           field: "auths_name",
           type: "text",
           rules: [
-            { required: true, message: "权限名称不能为空", trigger: "blur" },
+            { required: true, message: "分类名称不能为空", trigger: "blur" },
             { min: 3, max: 6, message: "长度在 3-6 个字符", trigger: "blur" },
           ],
         },
         {
-          label: "权限访问路径",
+          label: "分类访问路径",
           width: "",
           field: "auths_url",
           type: "text",
           rules: [
             {
               required: true,
-              message: "权限访问路径不能为空",
+              message: "分类访问路径不能为空",
               trigger: "blur",
             },
             { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
           ],
         },
         {
-          label: "权限组件路径",
+          label: "分类组件路径",
           width: "",
           field: "url",
           type: "text",
           rules: [
             {
               required: true,
-              message: "权限组件路径不能为空",
+              message: "分类组件路径不能为空",
               trigger: "blur",
             },
             { min: 1, max: 16, message: "长度在 1-16 个字符", trigger: "blur" },
