@@ -10,21 +10,30 @@
       :width="width"
       :formConfig="formConfig"
       :formBtns="formBtns"
+      :row="row"
       @submit="submitFn"
     />
-    <span slot="footer" class="dialog-footer">
+    <!-- <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-    </span>
+    </span> -->
   </el-dialog>
 </template>
 
 <script>
+import { putRolesApi } from "@/api/roles";
 export default {
   props: {
     state: {
       type: Boolean,
       default: false,
+    },
+    row: {
+      type: Object,
+      required: true,
+    },
+    initDateFn: {
+      type: Function,
     },
   },
   data() {
@@ -43,7 +52,7 @@ export default {
         {
           label: "角色描述",
           width: "",
-          field: "role_desc",
+          field: "role_describe",
           type: "text",
           rules: [
             { required: true, message: "用户名必须填写", trigger: "blur" },
@@ -69,6 +78,22 @@ export default {
   methods: {
     submitFn(formData) {
       console.log("更新数据处理", formData);
+      putRolesApi(formData).then((res) => {
+        console.log(res);
+        if (res.meta.state == 200) {
+          this.$message({
+            type: "success",
+            message: `${res.meta.msg}!`,
+          });
+          this.initDateFn();
+          this.$emit("close");
+        } else {
+          this.$message({
+            type: "error",
+            message: `${res.meta.msg}!`,
+          });
+        }
+      });
     },
     handleClose() {
       this.$emit("close");

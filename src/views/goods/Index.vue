@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import tableData from "~mock/goods/index.js";
+// import tableData from "~mock/goods/index.js";
 export default {
   data() {
     return {
@@ -71,7 +71,7 @@ export default {
         },
       ],
       // 表格数据
-      tableData: tableData.data,
+      tableData: [],
     };
   },
 };

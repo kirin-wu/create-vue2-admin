@@ -8,11 +8,12 @@
   >
     <!-- ##树形控件 -->
     <el-tree
-      :data="data"
+      ref="tree"
+      :data="AuthsData"
       show-checkbox
-      node-key="id"
+      node-key="auth_id"
       :default-expanded-keys="[2, 3]"
-      :default-checked-keys="[5]"
+      :default-checked-keys="this.row ? this.row.auth_ids_son.split(',') : []"
       :props="defaultProps"
     >
     </el-tree>
@@ -24,73 +25,77 @@
 </template>
 
 <script>
+import { getAuthsApi } from "@/api/auths";
+import { putRolesChangeAuthApi } from "@/api/roles";
 export default {
   props: {
     state: {
       required: true,
     },
+    row: {
+      row: Object,
+    },
+    initDateFn: {
+      type: Function,
+    },
   },
   data() {
     return {
-      data: [
-        {
-          id: 1,
-          label: "一级 1",
-          children: [
-            {
-              id: 4,
-              label: "二级 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "三级 1-1-1",
-                },
-                {
-                  id: 10,
-                  label: "三级 1-1-2",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          label: "一级 2",
-          children: [
-            {
-              id: 5,
-              label: "二级 2-1",
-            },
-            {
-              id: 6,
-              label: "二级 2-2",
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "一级 3",
-          children: [
-            {
-              id: 7,
-              label: "二级 3-1",
-            },
-            {
-              id: 8,
-              label: "二级 3-2",
-            },
-          ],
-        },
-      ],
+      // ##树形控件数据
+      AuthsData: [],
+      // defaultCheckKey: [],
       defaultProps: {
         children: "children",
-        label: "label",
+        label: "auth_name",
       },
     };
   },
+  created() {
+    getAuthsApi().then((res) => {
+      this.AuthsData = res.data;
+    });
+  },
   methods: {
-    submitFn(formData) {
-      console.log("更新数据处理", formData);
+    submitFn() {
+      // console.log(11111, this.$refs.tree.getCheckedNodes());
+      // ##收集子的数据
+      let chooseData = this.$refs.tree.getCheckedNodes();
+      // console.log(chooseData);
+      let auth_ids_son = [];
+      chooseData.forEach((item) => {
+        if (item.auth_pid != 0) auth_ids_son.push(item.auth_pid);
+      });
+      // ##收集父的数据
+      let auth_ids = [];
+      chooseData.forEach((item) => {
+        if (item.auth_pid != 0) auth_ids.push(item.auth_pid);
+        auth_ids = [...new Set(auth_ids)];
+      });
+      // console.log(1, auth_ids_son, 2, auth_ids, 3, this.row.role_id);
+      auth_ids_son = auth_ids_son.join(",");
+      auth_ids = auth_ids.join(",");
+      let role_id = this.row.role_id;
+
+      putRolesChangeAuthApi({
+        auth_ids_son,
+        auth_ids,
+        role_id,
+      }).then((res) => {
+        if (res.meta.state == 200) {
+          // console.log(res);
+          this.$message({
+            type: "success",
+            message: `${res.meta.msg}!`,
+          });
+          this.initDateFn();
+          this.$emit("close");
+        } else {
+          this.$message({
+            type: "error",
+            message: `${res.meta.msg}!`,
+          });
+        }
+      });
     },
     handleClose() {
       // done();

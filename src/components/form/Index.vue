@@ -85,6 +85,15 @@ export default {
     formBtns: {
       type: Array,
     },
+    row: {
+      type: Object,
+    },
+  },
+  created() {
+    console.log("row数据", this.row);
+    if (this.row) {
+      this.formData = this.row;
+    }
   },
   data() {
     return {

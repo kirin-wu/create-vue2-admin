@@ -11,16 +11,26 @@
       :formConfig="formConfig"
       :formBtns="formBtns"
       @submit="submitFn"
+      :row="row"
     />
   </el-dialog>
 </template>
 
 <script>
+import { getRolesApi } from "@/api/roles.js";
+import { putUserRoleApi } from "@/api/users.js";
 export default {
   props: {
     state: {
       type: Boolean,
       default: false,
+    },
+    row: {
+      type: Object,
+      required: true,
+    },
+    initDataFn: {
+      type: Function,
     },
   },
   data() {
@@ -30,7 +40,7 @@ export default {
         {
           label: "当前用户",
           width: "",
-          field: "uname",
+          field: "username",
           type: "text",
           disabled: true,
           rules: [
@@ -43,9 +53,7 @@ export default {
           field: "role_name",
           type: "text",
           disabled: true,
-          rules: [
-            { required: true, message: "角色名必须填写", trigger: "blur" },
-          ],
+          rules: [],
         },
         {
           label: "选择角色",
@@ -73,15 +81,43 @@ export default {
         // },
       ],
       formData: {
-        uname: "",
+        username: "",
         role_name: "",
         role_id: "",
       },
     };
   },
+  created() {
+    getRolesApi().then((res) => {
+      let temp = res.data.map((item) => {
+        return {
+          label: item.role_name,
+          value: item.role_id,
+        };
+      });
+      this.formConfig[2].payload = temp;
+      console.log(this.formConfig[2].payload);
+    });
+  },
   methods: {
     submitFn(formData) {
       console.log("更新数据处理", formData);
+      putUserRoleApi(formData).then((res) => {
+        if (res.meta.state == "200") {
+          this.$message({
+            message: res.meta.msg,
+            type: "success",
+          });
+          this.initDataFn();
+          this.$emit("close");
+        } else {
+          this.$message({
+            message: res.meta.msg,
+            type: "error",
+          });
+          this.$emit("close");
+        }
+      });
     },
     handleClose() {
       // done();

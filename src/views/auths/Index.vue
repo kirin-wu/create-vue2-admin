@@ -5,12 +5,13 @@
       </el-input>
       <!-- 树形权限列表 -->
       <el-tree
-        :data="data"
+        :data="tableData"
         show-checkbox
         node-key="id"
         default-expand-all
         :expand-on-click-node="false"
         :filter-node-method="filterNode"
+        :props="defaultProps"
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
@@ -29,7 +30,7 @@
         </span>
       </el-tree>
     </MtCard>
-    <Edit :state="editstate" @close="editstate = false" />
+    <Edit :state="editstate" @close="editstate = false" :row="row" />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -50,12 +51,25 @@
 </style>
 <script>
 import Edit from "./components/Edit.vue";
+import { getAuthsApi, deleteAuthsApi } from "@/api/auths";
 export default {
   components: {
     Edit,
   },
+  created() {
+    getAuthsApi().then((res) => {
+      // console.log(res);
+      this.tableData = res.data;
+    });
+  },
   data() {
     return {
+      row: {},
+      tableData: [],
+      defaultProps: {
+        children: "children",
+        label: "auth_name",
+      },
       editstate: false,
       filterText: "",
       data: [
@@ -160,6 +174,11 @@ export default {
     };
   },
   methods: {
+    // AuthsFn() {
+    //   this.$nextTick(() => {
+    //     getAuthsApi();
+    //   });
+    // },
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
@@ -167,10 +186,42 @@ export default {
     append(data) {
       console.log("编辑", data);
       this.editstate = true;
+      this.row = data;
     },
     remove(node, data) {
       console.log("删除", node, data);
-      this.deleteFn();
+      this.deleteFn(node.data);
+    },
+    deleteFn(row) {
+      // console.log("删除", row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteAuthsApi({ auth_id: row.auth_id }).then((res) => {
+            console.log(res);
+            if (res.meta.state == 200) {
+              getAuthsApi();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: `${res.meta.msg}!`,
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
 };

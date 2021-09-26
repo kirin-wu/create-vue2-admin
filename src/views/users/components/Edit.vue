@@ -5,22 +5,35 @@
     width="30%"
     :before-close="handleClose"
     v-if="state"
+    state
   >
     <MtFrom
       :width="width"
       :formConfig="formConfig"
       :formBtns="formBtns"
       @submit="submitFn"
+      :row="row"
     />
   </el-dialog>
 </template>
 
 <script>
+import { putUsersEditApi } from "@/api/users.js";
 export default {
+  created() {
+    console.log("editRow", this.row);
+  },
   props: {
     state: {
       type: Boolean,
       default: false,
+    },
+    row: {
+      type: Object,
+      required: true,
+    },
+    initDataFn: {
+      type: Function,
     },
   },
   data() {
@@ -30,7 +43,7 @@ export default {
         {
           label: "用户名",
           width: "",
-          field: "uname",
+          field: "username",
           type: "text",
           rules: [
             { required: true, message: "用户名必须填写", trigger: "blur" },
@@ -51,22 +64,9 @@ export default {
             },
           ],
         },
-
-        {
-          label: "账号状态",
-          field: "state",
-          type: "select",
-          payload: [
-            { label: "正常", value: "true" },
-            { label: "冻结", value: "false" },
-          ],
-          rules: [
-            { required: true, message: "请选择账号状态", trigger: "blur" },
-          ],
-        },
         {
           label: "密保问题",
-          field: "question",
+          field: "passwd_question",
           type: "select",
           payload: [
             { label: "母亲的名字", value: "母亲的名字" },
@@ -79,7 +79,7 @@ export default {
         {
           label: "密保答案",
           width: "",
-          field: "answer",
+          field: "passwd_answer",
           type: "text",
           rules: [
             { required: true, message: "答案不能为空", trigger: "blur" },
@@ -98,9 +98,8 @@ export default {
         },
       ],
       formData: {
-        uname: "",
+        username: "",
         mobile: "",
-        state: "",
         question: "",
         answer: "",
       },
@@ -109,6 +108,23 @@ export default {
   methods: {
     submitFn(formData) {
       console.log("更新数据处理", formData);
+      putUsersEditApi(formData).then((res) => {
+        if (res.meta.state == "200") {
+          this.$message({
+            message: res.meta.msg,
+            type: "success",
+          });
+          this.initDataFn();
+          this.$emit("close");
+          // getUsersApi();
+        } else {
+          this.$message({
+            message: res.meta.msg,
+            type: "error",
+          });
+          this.$emit("close");
+        }
+      });
     },
     handleClose() {
       this.$emit("close");

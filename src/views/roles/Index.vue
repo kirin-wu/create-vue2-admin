@@ -16,22 +16,20 @@
       </div>
       <!-- ### 用户列表表格 -->
       <MtTable :tableData="tableData" :columns="columns" />
-
-      <!-- ### 分页 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
-      >
-      </el-pagination>
     </el-card>
     <!-- ## 分配权限弹框EditAuth 编辑Edit -->
-    <Edit :state="editstate" @close="editstate = false" />
-    <EditAuth :state="editauthstate" @close="editauthstate = false" />
+    <Edit
+      :state="editstate"
+      @close="editstate = false"
+      :row="row"
+      :initDateFn="initDateFn"
+    />
+    <EditAuth
+      :state="editauthstate"
+      @close="editauthstate = false"
+      :row="row"
+      :initDateFn="initDateFn"
+    />
   </div>
 </template>
 <style lang="scss" scoped>
@@ -63,7 +61,8 @@
 }
 </style>
 <script>
-import tableData from "~mock/roles/index";
+// import tableData from "~mock/roles/index";
+import { getRolesApi, deleteRolesApi } from "@/api/roles.js";
 import Edit from "./components/Edit.vue";
 import EditAuth from "./components/EditAuth.vue";
 export default {
@@ -73,15 +72,16 @@ export default {
   },
   data() {
     return {
+      row: {},
       // 分页数据
       currentPage: 5,
       // 分配权限 编辑 删除
       editstate: false,
       editauthstate: false,
       columns: [
-        { title: "编号", field: "id" },
+        { title: "编号", field: "role_id" },
         { title: "角色名称", field: "role_name" },
-        { title: "角色描述", field: "role_desc" },
+        { title: "角色描述", field: "role_describe" },
         {
           title: "操作",
           width: "360",
@@ -93,6 +93,7 @@ export default {
               click: (row) => {
                 console.log("分配", row);
                 this.editauthstate = true;
+                this.row = row;
               },
             },
             {
@@ -102,6 +103,7 @@ export default {
               click: (row) => {
                 console.log("编辑", row);
                 this.editstate = true;
+                this.row = row;
               },
             },
             {
@@ -116,10 +118,53 @@ export default {
           ],
         },
       ],
-      tableData: tableData.data,
+      tableData: [],
+      tableDataTotal: 0,
+      params: {},
     };
   },
+  created() {
+    this.initDateFn();
+  },
   methods: {
+    deleteFn(row) {
+      console.log("删除", row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteRolesApi({ role_id: row.role_id }).then((res) => {
+            console.log(res);
+            if (res.meta.state == 200) {
+              this.$message({
+                type: "success",
+                message: `${res.meta.msg}!`,
+              });
+              this.initDateFn();
+            } else {
+              this.$message({
+                type: "error",
+                message: `${res.meta.msg}!`,
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    initDateFn() {
+      getRolesApi(this.params).then((res) => {
+        console.log(res);
+        this.tableData = res.data;
+        this.tableDataTotal = parseInt(res.data.total);
+      });
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

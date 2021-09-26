@@ -17,6 +17,7 @@
 }
 </style>
 <script>
+import { postRolesCreateApi } from "@/api/roles.js";
 export default {
   data() {
     return {
@@ -35,7 +36,7 @@ export default {
         {
           label: "角色描述",
           width: "",
-          field: "role_desc",
+          field: "role_describe",
           type: "text",
           rules: [
             { required: true, message: "角色描述不能为空", trigger: "blur" },
@@ -58,6 +59,21 @@ export default {
   methods: {
     submitFn(formData) {
       console.log("提交了", formData);
+      postRolesCreateApi(formData).then((res) => {
+        console.log(res);
+        if (res.meta.state == "201") {
+          this.$message({
+            message: res.meta.msg,
+            type: "success",
+          });
+          this.jump("/roles");
+        } else {
+          this.$message({
+            message: res.meta.msg,
+            type: "error",
+          });
+        }
+      });
     },
   },
 };

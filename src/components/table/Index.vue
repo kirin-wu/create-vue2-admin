@@ -28,6 +28,8 @@
             @change="item.payload.change(scope.row)"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0"
           >
           </el-switch>
           <!--  end_switch -->

@@ -10,7 +10,7 @@ const request = axios.create({
 // 拦截器
 request.interceptors.request.use((config) => {
   let token =
-    localStorage.getItem("token") || '"9201591ba0eb36c8abaea2854274f5082';
+    localStorage.getItem("token") || "9201591ba0eb36c8abaea2854274f5082";
   config.headers.token = token;
   return config;
 }),

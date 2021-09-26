@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import tableData from "~mock/cates";
+// import tableData from "~mock/cates";
 export default {
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
           },
         },
       ],
-      tableData,
+      tableData: [],
     };
   },
   methods: {
