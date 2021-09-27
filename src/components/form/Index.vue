@@ -14,6 +14,7 @@
         v-if="item.type === 'cascader'"
         :options="item.payload.options"
         v-model="formData[item.field]"
+        change-on-select
         @change="item.payload.change"
       ></el-cascader>
       <!-- ###级联选择器 -->

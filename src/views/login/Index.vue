@@ -13,7 +13,7 @@
         <br />
         <el-form-item prop="question">
           <el-select
-            v-model="value"
+            v-model="formdata.question"
             placeholder="请选择密保"
             style="width: 100%"
             prop="question"
@@ -35,9 +35,9 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item prop="username">
+        <el-form-item prop="uname">
           <el-input
-            v-model="formdata.username"
+            v-model="formdata.uname"
             placeholder="请输入账号"
             prefix-icon="el-icon-s-custom"
             clearable
@@ -45,7 +45,7 @@
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-            v-model="formdata.password"
+            v-model="formdata.pwd"
             placeholder="请输入密码"
             prefix-icon="el-icon-lollipop"
             clearable
@@ -70,10 +70,7 @@
           class="login-moblie"
           @click="jump('/login/token')"
         ></el-button>
-        <el-button
-          class="login-btn"
-          type="primary"
-          @click="submitForm('ruleForm')"
+        <el-button class="login-btn" type="primary" @click="submitForm()"
           >登录</el-button
         >
       </el-form>
@@ -125,6 +122,8 @@
 </style>
 <script>
 import QrCode from "./components/QrCode.vue";
+// import { postLoginApi } from "@/api/login";
+import { mapActions } from "vuex";
 export default {
   components: {
     QrCode,
@@ -135,29 +134,24 @@ export default {
       saomastate: false,
       options: [
         {
-          value: "选项1",
+          value: "您父亲的姓名",
           label: "您父亲的姓名",
         },
         {
-          value: "选项2",
-          label: "您最喜欢的老师的姓名",
+          value: "您其中一位老师的名字",
+          label: "您其中一位老师的名字",
         },
         {
-          value: "选项3",
+          value: "您最喜欢的餐馆名称",
           label: "您最喜欢的餐馆名称",
         },
         {
-          value: "选项4",
+          value: "您最想去的地方",
           label: "您最想去的地方",
         },
       ],
       value: "",
-      formdata: {
-        question: "",
-        answer: "",
-        username: "",
-        password: "",
-      },
+      formdata: {},
       rules: {
         question: [
           { required: true, message: "请选择密保问题", trigger: "blur" },
@@ -171,7 +165,7 @@ export default {
             trigger: "blur",
           },
         ],
-        username: [
+        uanme: [
           { required: true, message: "请输入账号", trigger: "blur" },
           {
             min: 3,
@@ -180,7 +174,7 @@ export default {
             trigger: "blur",
           },
         ],
-        password: [
+        pwd: [
           { required: true, message: "请输入密码", trigger: "blur" },
           {
             min: 3,
@@ -193,16 +187,25 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log(this.formdata);
-        } else {
-          console.log("error submit!!");
-          console.log(2);
-          return false;
-        }
-      });
+    ...mapActions({
+      login: "login/FETCH_MB_LOGIN",
+    }),
+    async submitForm() {
+      // ##请求接口数据
+      let res = await this.login(this.formdata);
+      // console.log(res);
+      if (res.meta.state == 200) {
+        this.$message({
+          type: "success",
+          message: `${res.meta.msg}!`,
+        });
+        this.jump("/");
+      } else {
+        this.$message({
+          type: "error",
+          message: `${res.meta.msg}!`,
+        });
+      }
     },
     saomaFn() {
       this.saomastate = true;
