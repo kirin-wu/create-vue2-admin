@@ -11,32 +11,31 @@
       >
         <h2>B2C电商管理系统</h2>
         <br />
-        <el-form-item prop="mobile">
+        <el-form-item prop="account">
           <el-input
-            v-model="formdata.mobile"
+            v-model="formdata.account"
             placeholder="请输入手机号"
             prefix-icon="el-icon-s-custom"
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item prop="mobile_token">
+        <el-form-item prop="token">
           <el-input
-            v-model="formdata.mobile_token"
+            v-model="formdata.token"
             placeholder="请输入手机令牌"
             prefix-icon="el-icon-lollipop"
             clearable
-            ref="mobiletoken"
-            @click="subtokenFn"
+            ref="accounttoken"
           ></el-input>
         </el-form-item>
         <!-- 获取验证码 -->
-        <el-button
+        <!-- <el-button
           class="token"
           @click="subtokenFn"
-          ref="mobiletoken"
+          ref="accounttoken"
           :disabled="buttonstate"
           >{{ tokentime }}</el-button
-        >
+        > -->
         <!-- ###返回 -->
         <el-button
           class="login-back"
@@ -45,10 +44,7 @@
           @click="jump('./')"
         ></el-button>
         <!-- ###登录 -->
-        <el-button
-          class="login-btn"
-          type="primary"
-          @click="submitForm('ruleForm')"
+        <el-button class="login-btn" type="primary" @click="submitForm"
           >登录</el-button
         >
       </el-form>
@@ -59,7 +55,7 @@
 ::v-deep .el-icon-camera-solid {
   margin-left: -6px;
 }
-::v-deep .el-icon-mobile-phone {
+::v-deep .el-icon-account-phone {
   margin-left: -6px;
 }
 ::v-deep .el-icon-s-claim {
@@ -97,6 +93,7 @@
 }
 </style>
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -107,11 +104,11 @@ export default {
       t: null,
       n: 10,
       formdata: {
-        mobile: "",
-        mobile_token: "",
+        account: "",
+        token: "",
       },
       rules: {
-        mobile: [
+        account: [
           { required: true, message: "请输入手机号", trigger: "blur" },
           {
             min: 11,
@@ -120,37 +117,45 @@ export default {
             trigger: "blur",
           },
         ],
-        mobile_token: [
-          { required: true, message: "请输入手机令牌", trigger: "blur" },
-        ],
+        token: [{ required: true, message: "请输入手机令牌", trigger: "blur" }],
       },
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log(this.formdata);
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    ...mapActions({
+      loginToken: "login/FETCH_TOKEN_LOGIN",
+    }),
+    // ## 手机令牌登录
+    async submitForm() {
+      console.log(this.formdata);
+      let res = await this.loginToken(this.formdata);
+      if (res.meta.state == 200) {
+        this.$message({
+          type: "success",
+          message: `${res.meta.msg}!`,
+        });
+        this.jump("/");
+      } else {
+        this.$message({
+          type: "error",
+          message: `${res.meta.msg}!`,
+        });
+      }
     },
-    subtokenFn() {
-      this.buttonstate = true;
-      this.t = setInterval(() => {
-        this.n--;
-        this.tokentime = `重新获取（${this.n}）`;
-        if (this.n == 0) {
-          clearInterval(this.t);
-          this.tokentime = `发送手机令牌`;
-          this.n = 10;
-          this.buttonstate = false;
-        }
-      }, 1000);
-      console.log("获取手机令牌");
-    },
+    // subtokenFn() {
+    //   this.buttonstate = true;
+    //   this.t = setInterval(() => {
+    //     this.n--;
+    //     this.tokentime = `重新获取（${this.n}）`;
+    //     if (this.n == 0) {
+    //       clearInterval(this.t);
+    //       this.tokentime = `发送手机令牌`;
+    //       this.n = 10;
+    //       this.buttonstate = false;
+    //     }
+    //   }, 1000);
+    //   console.log("获取手机令牌");
+    // },
   },
 };
 </script>

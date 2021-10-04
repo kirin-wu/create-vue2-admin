@@ -184,7 +184,7 @@ export default {
       return data.label.indexOf(value) !== -1;
     },
     append(data) {
-      console.log("编辑", data);
+      // console.log("编辑", data);
       this.editstate = true;
       this.row = data;
     },
@@ -201,13 +201,13 @@ export default {
       })
         .then(() => {
           deleteAuthsApi({ auth_id: row.auth_id }).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.meta.state == 200) {
-              getAuthsApi();
               this.$message({
                 type: "success",
                 message: "删除成功!",
               });
+              getAuthsApi();
             } else {
               this.$message({
                 type: "error",

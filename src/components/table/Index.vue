@@ -1,5 +1,5 @@
 <template>
-  <el-table row-key="cat_id" :data="tableData" stripe style="width: 100%">
+  <el-table :row-key="rowkey" :data="tableData" stripe style="width: 100%">
     <template v-for="(item, index) in columns">
       <!-- ##默认 -->
       <el-table-column
@@ -49,7 +49,10 @@
           <!--  img -->
           <img
             v-if="item.type === 'img'"
-            :src="scope.row[item.payload.field]"
+            width="50px"
+            :src="
+              'http://tmp00001.zhaodashen.cn/' + scope.row[item.payload.field]
+            "
             alt="img"
           />
           <!--  end_img -->
@@ -106,6 +109,10 @@
 import Vue from "vue";
 export default {
   props: {
+    rowkey: {
+      type: String,
+      default: "cat_id",
+    },
     tableData: {
       required: true,
       type: Array,

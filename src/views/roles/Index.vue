@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     deleteFn(row) {
-      console.log("删除", row);
+      // console.log("删除", row);
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -136,7 +136,7 @@ export default {
       })
         .then(() => {
           deleteRolesApi({ role_id: row.role_id }).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.meta.state == 200) {
               this.$message({
                 type: "success",
@@ -160,7 +160,7 @@ export default {
     },
     initDateFn() {
       getRolesApi(this.params).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.tableData = res.data;
         this.tableDataTotal = parseInt(res.data.total);
       });

@@ -110,7 +110,7 @@ export default {
   },
   created() {
     getAuthsApi().then((res) => {
-      console.log(res);
+      // console.log(res);
       // let temp = res.data.map((item) => {
       //   return {
       //     label: item.auth_name,
@@ -125,13 +125,13 @@ export default {
         });
       });
       // this.formConfig[2].payload = res.data;
-      console.log("temp", temp);
+      // console.log("temp", temp);
       this.formConfig[2].payload = temp;
     });
   },
   methods: {
     submitFn(formData) {
-      console.log("提交了", formData);
+      // console.log("提交了", formData);
       formData.auth_pid = formData.auth.split("_")[0];
       formData.auth_pname = formData.auth.split("_")[1];
       postAuthsApi(formData).then((res) => {

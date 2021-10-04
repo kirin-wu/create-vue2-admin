@@ -26,10 +26,18 @@ export const postSmsSendApi = (postData) => {
     data: qs.stringify(postData),
   });
 };
-// ##发送短信
+// ##短信登录
 export const postSmsLoginApi = (postData) => {
   return request({
     url: "/sms/login.jsp",
+    method: "post",
+    data: qs.stringify(postData),
+  });
+};
+// ##令牌登录
+export const postTokenLoginApi = (postData) => {
+  return request({
+    url: "/token/login.jsp",
     method: "post",
     data: qs.stringify(postData),
   });

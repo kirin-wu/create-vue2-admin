@@ -11,7 +11,7 @@
       >
         <h2>B2C电商管理系统</h2>
         <br />
-        <el-form-item prop="mobile">
+        <el-form-item prop="mobile" ref="form">
           <el-input
             v-model="formdata.mobile"
             placeholder="请输入手机号"
@@ -19,9 +19,9 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item prop="mobile_code">
+        <el-form-item prop="code">
           <el-input
-            v-model="formdata.mobile_code"
+            v-model="formdata.code"
             placeholder="请输入验证码"
             prefix-icon="el-icon-lollipop"
             clearable
@@ -97,6 +97,7 @@
 }
 </style>
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -108,7 +109,7 @@ export default {
       n: 10,
       formdata: {
         mobile: "",
-        mobile_code: "",
+        code: "",
       },
       rules: {
         mobile: [
@@ -120,36 +121,71 @@ export default {
             trigger: "blur",
           },
         ],
-        mobile_code: [
-          { required: true, message: "请输入验证码", trigger: "blur" },
-        ],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log(this.formdata);
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    // ## 获取手机验证码
+    ...mapActions({
+      sendSms: "login/FETCH_SMS_SEND",
+      loginSms: "login/FETCH_SMS_LOGIN",
+    }),
+    // ## 手机短信登录
+    async submitForm() {
+      let res = await this.loginSms(this.formdata);
+      if (res.meta.state == 200) {
+        this.$message({
+          type: "success",
+          message: `${res.meta.msg}!`,
+        });
+        this.jump("/");
+      } else {
+        this.$message({
+          type: "error",
+          message: `${res.meta.msg}!`,
+        });
+      }
     },
-    subcodeFn() {
-      this.buttonstate = true;
-      this.t = setInterval(() => {
-        this.n--;
-        this.codetime = `重新获取（${this.n}）`;
-        if (this.n == 0) {
-          clearInterval(this.t);
-          this.codetime = `发送验证码`;
-          this.n = 10;
-          this.buttonstate = false;
+    // ## 获取手机验证码
+    async subcodeFn() {
+      // ### 正则验证手机号
+      if (
+        this.formdata.mobile.length == 11 &&
+        /^1\d{10}$/.test(this.formdata.mobile)
+      ) {
+        let res = await this.sendSms({ mobile: this.formdata.mobile });
+        // #### 接口状态码
+        if (res.meta.state == 201) {
+          this.buttonstate = true;
+          this.t = setInterval(() => {
+            this.n--;
+            this.codetime = `重新获取（${this.n}）`;
+            if (this.n == 0) {
+              clearInterval(this.t);
+              this.codetime = `发送验证码`;
+              this.n = 10;
+              this.buttonstate = false;
+            }
+          }, 1000);
+          this.$message({
+            type: "success",
+            message: `${res.meta.msg}!`,
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: `${res.meta.msg}!`,
+          });
         }
-      }, 1000);
-      console.log("获取验证码");
+      }
+      // 正则验证手机号不对报错
+      else {
+        this.$notify.error({
+          title: "错误",
+          message: "手机号输入错误",
+        });
+      }
     },
   },
 };

@@ -133,7 +133,7 @@ export default {
               value: item.cat_id,
             };
           });
-          console.log("children", temp2);
+          // console.log("children", temp2);
         }
         // ##返回一级目录数据和二级目录数据
         return {
@@ -150,7 +150,7 @@ export default {
       // console.log("提交了", formData);
       formData.pid = formData.pid[formData.pid.length - 1];
       postCatesApi(formData).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.meta.state == 201) {
           this.$message({
             type: "success",

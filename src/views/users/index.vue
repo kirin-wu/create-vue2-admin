@@ -148,7 +148,7 @@ export default {
                 user_id: row.user_id,
                 state: row.state,
               }).then((res) => {
-                // console.log(res);
+                console.log(res);
                 if (res.meta.state == 200) {
                   this.$message({
                     type: "success",

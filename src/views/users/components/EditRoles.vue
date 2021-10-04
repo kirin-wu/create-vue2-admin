@@ -96,12 +96,12 @@ export default {
         };
       });
       this.formConfig[2].payload = temp;
-      console.log(this.formConfig[2].payload);
+      // console.log(this.formConfig[2].payload);
     });
   },
   methods: {
     submitFn(formData) {
-      console.log("更新数据处理", formData);
+      // console.log("更新数据处理", formData);
       putUserRoleApi(formData).then((res) => {
         if (res.meta.state == "200") {
           this.$message({

@@ -13,139 +13,26 @@
         :collapse-transition="false"
       >
         <!-- ## 后台首页 -->
-        <el-submenu index="1">
+        <el-submenu
+          v-for="item in menus"
+          :key="item.auth_id"
+          :index="item.auth_id"
+        >
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <!-- <i class="iconfont icon-fenlei"></i> -->
-            <span slot="title">后台首页</span>
+            <span slot="title">
+              {{ item.auth_name }}
+            </span>
           </template>
 
-          <el-menu-item index="1-1" @click="jump('/welcome')">
-            <!-- <i class="el-icon-setting"></i> -->
+          <el-menu-item
+            v-for="sonItem in item.children"
+            :key="sonItem.auth_id"
+            :index="`${item.auth_id}-${sonItem.auth_id}`"
+            @click="jump(sonItem.url)"
+          >
             <i class="iconfont icon-shezhi"></i>
-            欢迎页
-          </el-menu-item>
-          <el-menu-item index="1-2" @click="jump('/history')">
-            <i class="iconfont icon-shezhi"></i>
-            访客记录
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 商品分类 -->
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">分类管理</span>
-          </template>
-
-          <el-menu-item index="2-1" @click="jump('/cates')">
-            <i class="iconfont icon-shezhi"></i>
-            分类列表
-          </el-menu-item>
-          <el-menu-item index="2-2" @click="jump('/cates/create')">
-            <i class="iconfont icon-shezhi"></i>
-            分类创建
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 商品规格 -->
-        <el-submenu index="3">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">门店管理</span>
-          </template>
-          <el-menu-item index="3-1" @click="jump('/stores')">
-            <i class="iconfont icon-shezhi"></i>
-            商品类型
-          </el-menu-item>
-          <el-menu-item index="3-2" @click="jump('/stores/create')">
-            <i class="iconfont icon-shezhi"></i>
-            类型创建
-          </el-menu-item>
-          <el-menu-item index="3-3">
-            <i class="iconfont icon-shezhi"></i>
-            商品属性
-          </el-menu-item>
-          <el-menu-item index="3-4">
-            <i class="iconfont icon-shezhi"></i>
-            属性创建
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 商品管理 -->
-        <el-submenu index="4">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">门店商品</span>
-          </template>
-          <el-menu-item index="4-1" @click="jump('/goods')">
-            <i class="iconfont icon-shezhi"></i>
-            商品列表
-          </el-menu-item>
-          <el-menu-item index="4-2" @click="jump('/goods/create')">
-            <i class="iconfont icon-shezhi"></i>
-            商品创建
-          </el-menu-item>
-          <el-menu-item index="4-3">
-            <i class="iconfont icon-shezhi"></i>
-            商品回收站
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 订单管理 -->
-        <el-submenu index="5">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">订单管理</span>
-          </template>
-          <el-menu-item index="5-1" @click="jump('/orders')">
-            <i class="iconfont icon-shezhi"></i>
-            订单管理
-          </el-menu-item>
-          <el-menu-item index="5-2" @click="jump('/orders/total')">
-            <i class="iconfont icon-shezhi"></i>
-            订单图表
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 用户管理 -->
-        <el-submenu index="6">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">用户管理</span>
-          </template>
-          <el-menu-item index="6-1" @click="jump('/users')">
-            <i class="iconfont icon-shezhi"></i>
-            用户列表
-          </el-menu-item>
-          <el-menu-item index="6-2" @click="jump('/users/create')">
-            <i class="iconfont icon-shezhi"></i>
-            用户创建
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 角色管理 -->
-        <el-submenu index="7">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">角色管理</span>
-          </template>
-          <el-menu-item index="7-1" @click="jump('/roles')">
-            <i class="iconfont icon-shezhi"></i>
-            角色列表
-          </el-menu-item>
-          <el-menu-item index="7-2" @click="jump('/roles/create')">
-            <i class="iconfont icon-shezhi"></i>
-            角色创建
-          </el-menu-item>
-        </el-submenu>
-        <!-- ## 权限管理 -->
-        <el-submenu index="8">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">权限管理</span>
-          </template>
-          <el-menu-item index="8-1" @click="jump('/auths')">
-            <i class="iconfont icon-shezhi"></i>
-            权限列表
-          </el-menu-item>
-          <el-menu-item index="8-1" @click="jump('/auths/create')">
-            <i class="iconfont icon-shezhi"></i>
-            权限创建
+            {{ sonItem.auth_name }}
           </el-menu-item>
         </el-submenu>
       </el-menu>
@@ -173,9 +60,10 @@
           </div>
         </div>
         <div class="right">
-          <span>神龙教主(超级管理员)</span>
+          <span v-if="roleName">{{ uname }}({{ roleName }})</span>
+          <span v-else>{{ uname }}</span>
+          <i class="el-icon-switch-button" @click="outLoginFn"></i>
           <i class="el-icon-full-screen"></i>
-          <i class="el-icon-switch-button"></i>
         </div>
       </div>
       <div class="content">
@@ -246,12 +134,12 @@
         }
       }
       .right {
-        width: 240px;
+        width: 310px;
         display: flex;
         justify-content: center;
         align-items: center;
         span {
-          width: 176px;
+          width: 240px;
         }
         i {
           width: 20;
@@ -277,6 +165,7 @@
 // import Menu from "@/components/menu/Index.vue";
 // import TOP from "@/components/top/Index.vue";
 // import { Menu, Main } from "@/components";
+import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     // Menu,
@@ -291,7 +180,24 @@ export default {
       menuIcon: "el-icon-s-fold",
     };
   },
+  computed: {
+    ...mapState({
+      uname: (state) => state.login.uname,
+      roleName: (state) => state.login.roleName,
+      menus: (state) => state.auths.menus,
+    }),
+  },
   methods: {
+    // ### 退出
+    ...mapMutations({
+      loginOutClearData: "login/DELETE_USERINFO",
+      menusOutClearData: "auths/DELETE_USERINFO",
+    }),
+    outLoginFn() {
+      this.loginOutClearData();
+      this.menusOutClearData();
+      this.jump("/login");
+    },
     // ### 控制菜单切换
     changeMenu() {
       // this.menuIcon = this.menuIcon == 'el-icon-s-fold' ? 'el-icon-s-unfold' : 'el-icon-s-fold'

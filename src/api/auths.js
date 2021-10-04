@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import qs from "qs";
-
+// ## 权限列表
 export const getAuthsApi = (params) => {
   return request({
     url: "/auth/index.jsp",
@@ -8,7 +8,14 @@ export const getAuthsApi = (params) => {
     params,
   });
 };
-
+// ## 权限菜单
+export const getMenuApi = () => {
+  return request({
+    url: "/auth/menu.jsp",
+    method: "get",
+  });
+};
+// ## 创建用户
 export const postAuthsApi = (postData) => {
   return request({
     url: "/auth/create.jsp",
