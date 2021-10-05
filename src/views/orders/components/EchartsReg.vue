@@ -5,8 +5,26 @@
 <script>
 import echarts from "echarts";
 export default {
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+    title: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {};
+  },
   mounted() {
     this.initMychart();
+  },
+  watch: {
+    title() {
+      this.initMychart();
+    },
   },
   methods: {
     initMychart() {
@@ -17,14 +35,14 @@ export default {
       let option = {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: this.title,
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            data: [150, 230, 224, 218, 135, 147, 260],
+            data: this.data,
             type: "line",
           },
         ],

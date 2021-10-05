@@ -135,7 +135,7 @@ export default {
   methods: {
     initDateFn() {
       postUsersCreateApi(this.params).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.meta.state == "201") {
           this.$message({
             message: res.meta.msg,

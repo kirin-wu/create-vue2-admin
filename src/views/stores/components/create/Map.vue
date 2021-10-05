@@ -1,7 +1,12 @@
 <template>
   <div class="map">
     <p style="margin: 5px">
-      <input style="width: 200px; padding: 3px 4px" type="text" id="place" />
+      <input
+        style="width: 200px; padding: 3px 4px"
+        type="text"
+        id="place"
+        v-model="address"
+      />
       <span class="map_span"></span><br /><br />
     </p>
     <div id="container" style="width: 700px; height: 500px"></div>
@@ -10,6 +15,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      location: {},
+      address: "",
+    };
+  },
   mounted() {
     let map = new window.qq.maps.Map(document.getElementById("container"), {
       center: new window.qq.maps.LatLng(39.916527, 116.397128),
@@ -50,7 +61,7 @@ export default {
     });
     //添加dom监听事件
     let markersArray = [];
-    window.qq.maps.event.addDomListener(map, "click", function (event) {
+    window.qq.maps.event.addDomListener(map, "click", (event) => {
       // addMarker(event.latLng);
       // 全部清除 增加新的
       if (markersArray) {
@@ -66,10 +77,11 @@ export default {
         map: map,
       });
       markersArray.push(marker);
-      // 显示坐标
+      // 显示坐标;
       document.querySelector(".map_span").innerHTML =
         "经纬度：(" + location + ")";
-      console.log(location);
+      this.location = location;
+      // console.log(this.location);
     });
   },
 };

@@ -5,30 +5,42 @@
         <div class="top">
           <div class="box1">
             <h3>本月销售量</h3>
-            <h1>197，672</h1>
+            <h1>{{ echartsData.now_month_reg }}</h1>
           </div>
           <div class="box2">
             <h3>上月销售量</h3>
-            <h1>197，672</h1>
+            <h1>{{ echartsData.prev_month_total }}</h1>
           </div>
           <div class="box3">
             <h3>总库存</h3>
-            <h1>197，672</h1>
+            <h1>{{ echartsData.goods_total_number }}</h1>
           </div>
           <div class="box4">
             <h3>本月新注册用户</h3>
-            <h1>197，672</h1>
+            <h1 v-if="echartsData.now_month_total">
+              {{ echartsData.now_month_total }}
+            </h1>
+            <h1 v-else>{{ 999 }}</h1>
           </div>
         </div>
         <div class="center">
-          <EChartsReg />
+          <EChartsReg
+            :data="echartsData.reg_data"
+            :title="echartsData.reg_title"
+          />
         </div>
         <div class="down">
           <div class="left">
-            <EChartsPv />
+            <EChartsPv
+              :data="echartsData.pv_data"
+              :title="echartsData.pv_title"
+            />
           </div>
           <div class="right">
-            <EchartsShell />
+            <EchartsShell
+              :data="echartsData.store_data"
+              :title="echartsData.store_data"
+            />
           </div>
         </div>
       </div>
@@ -40,11 +52,39 @@
 import EChartsReg from "./components/EchartsReg.vue";
 import EChartsPv from "./components/EchartsPv";
 import EchartsShell from "./components/EchartsShell.vue";
+import { getTotalApi } from "@/api/orders";
 export default {
   components: {
     EChartsReg,
     EChartsPv,
     EchartsShell,
+  },
+  data() {
+    return {
+      echartsData: {
+        goods_total_number: 999,
+        now_month_reg: 999,
+        now_month_total: 999,
+        prev_month_total: 999,
+        pv_data: [],
+        pv_title: [],
+        reg_data: [],
+        reg_title: [],
+        store_data: [],
+        store_title: [],
+      },
+    };
+  },
+  created() {
+    this.initDataFn();
+  },
+  methods: {
+    initDataFn() {
+      getTotalApi().then((res) => {
+        // console.log(res);
+        this.echartsData = res.data;
+      });
+    },
   },
 };
 </script>
@@ -106,8 +146,6 @@ export default {
       }
       .left {
         margin-right: 20px;
-      }
-      .right {
       }
     }
   }

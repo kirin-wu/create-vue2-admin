@@ -3,7 +3,7 @@ import request from "@/utils/request";
 import qs from "qs";
 // 导出方法 推荐方法名 http请求动词+模块名+api
 // ##门店列表
-export const getstoresApi = (params) => {
+export const getStoresApi = (params) => {
   return request({
     url: "/stores/index.jsp",
     method: "get",
@@ -11,7 +11,7 @@ export const getstoresApi = (params) => {
   });
 };
 // ##门店创建
-export const poststoresApi = (postData) => {
+export const postStoresApi = (postData) => {
   return request({
     url: "/stores/create.jsp",
     method: "post",
@@ -19,7 +19,7 @@ export const poststoresApi = (postData) => {
   });
 };
 // ##门店删除
-export const deletestoresApi = (params) => {
+export const deleteStoresApi = (params) => {
   return request({
     url: "/stores/delete.jsp",
     method: "delete",

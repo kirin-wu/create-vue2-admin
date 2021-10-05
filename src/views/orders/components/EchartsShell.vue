@@ -8,6 +8,19 @@ export default {
   mounted() {
     this.initMychart();
   },
+  props: {
+    data: {
+      type: Array,
+    },
+    title: {
+      type: Array,
+    },
+  },
+  watch: {
+    title() {
+      this.initMychart();
+    },
+  },
   methods: {
     initMychart() {
       // 基于准备好的dom，初始化echarts实例
@@ -15,67 +28,18 @@ export default {
 
       // 指定图表的配置项和数据
       let option = {
-        title: {
-          text: "Waterfall Chart",
-          subtext: "Living Expenses in Shenzhen",
-        },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-          formatter: function (params) {
-            var tar = params[1];
-            return tar.name + "<br/>" + tar.seriesName + " : " + tar.value;
-          },
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true,
-        },
         xAxis: {
           type: "category",
-          splitLine: { show: false },
-          data: [
-            "Total",
-            "Rent",
-            "Utilities",
-            "Transportation",
-            "Meals",
-            "Other",
-          ],
+          data: this.title,
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            name: "Placeholder",
-            type: "bar",
-            stack: "Total",
-            itemStyle: {
-              borderColor: "transparent",
-              color: "transparent",
-            },
-            emphasis: {
-              itemStyle: {
-                borderColor: "transparent",
-                color: "transparent",
-              },
-            },
-            data: [0, 1700, 1400, 1200, 300, 0],
-          },
-          {
-            name: "Life Cost",
-            type: "bar",
-            stack: "Total",
-            label: {
-              show: true,
-              position: "inside",
-            },
-            data: [2900, 1200, 300, 200, 900, 300],
+            data: this.data,
+            type: "line",
+            smooth: true,
           },
         ],
       };

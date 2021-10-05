@@ -45,6 +45,7 @@ const routes = [
     path: "/",
     name: "admin", //跳转 添加路由规则
     component: Admin,
+    meta: { name1: "后台首页", name2: "后台首页" },
     // children: [
     //   { path: "test", component: Test },
 

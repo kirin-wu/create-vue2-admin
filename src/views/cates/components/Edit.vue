@@ -147,7 +147,7 @@ export default {
               value: item.cat_id,
             };
           });
-          console.log("children", temp2);
+          // console.log("children", temp2);
         }
         // ##返回一级目录数据和二级目录数据
         return {
@@ -160,8 +160,8 @@ export default {
     });
   },
   methods: {
-    submitFn(formData) {
-      console.log("更新数据处理", formData);
+    submitFn() {
+      // console.log("更新数据处理", formData);
     },
     handleClose() {
       this.$emit("close");

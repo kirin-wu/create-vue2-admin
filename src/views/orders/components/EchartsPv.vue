@@ -8,6 +8,19 @@ export default {
   mounted() {
     this.initMychart();
   },
+  props: {
+    data: {
+      type: Array,
+    },
+    title: {
+      type: Array,
+    },
+  },
+  watch: {
+    title() {
+      this.initMychart();
+    },
+  },
   methods: {
     initMychart() {
       // 基于准备好的dom，初始化echarts实例
@@ -17,14 +30,14 @@ export default {
       let option = {
         xAxis: {
           type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          data: this.title,
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.data,
             type: "bar",
           },
         ],

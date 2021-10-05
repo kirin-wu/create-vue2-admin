@@ -12,12 +12,12 @@
       <!-- ##上传头像 -->
       <el-upload
         class="qf-upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://kg.zhaodashen.cn/mt/admin/upload.jsp"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
       >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <img v-if="img" :src="img" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       <!-- ##上传头像 -->
@@ -37,6 +37,7 @@
 }
 </style>
 <script>
+import { getGoodsApi, postGoodsApi } from "@/api/goods";
 export default {
   data() {
     return {
@@ -55,7 +56,6 @@ export default {
           clearable: true,
           rules: [
             { required: true, message: "商品名称不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
           ],
           payload: {
             width: "500px",
@@ -63,9 +63,9 @@ export default {
         },
 
         {
-          label: "库存",
+          label: "商品数量",
           width: "",
-          field: "repertory",
+          field: "goods_number",
           type: "text",
           payload: {
             width: "300px",
@@ -91,7 +91,7 @@ export default {
         {
           label: "销售价",
           width: "",
-          field: "sale_price",
+          field: "shop_price",
           type: "text",
           payload: {
             width: "300px",
@@ -104,7 +104,7 @@ export default {
         {
           label: "所属门店",
           width: "",
-          field: "store",
+          field: "store_id",
           type: "select",
           payload: [
             { label: "江北一店", value: "1" },
@@ -118,29 +118,48 @@ export default {
         },
       ],
       formData: {
+        store_id: "",
         goods_name: "",
-        repertory: "",
+        goods_number: "",
         market_price: "",
-        sale_price: "",
-        store: "",
+        shop_price: "",
       },
       formBtns: [
-        { content: "登录", type: "primary" },
+        { content: "创建", type: "primary" },
         { content: "重置", type: "" },
       ],
-      imageUrl: "",
+      img: "",
+      imgData: "",
     };
+  },
+  created() {
+    getGoodsApi().then((res) => {
+      // console.log(res);
+      let temp = res.data.list.map((item) => {
+        return {
+          label: item.goods_name,
+          value: item.goods_id,
+        };
+      });
+      this.formConfig[4].payload = temp;
+    });
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      // console.log(res);
+      if (res.meta.state == 201) {
+        this.img = URL.createObjectURL(file.raw);
+        this.imgData = res.data.img;
+      } else {
+        this.$message.error(res.meta.msg);
+      }
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpeg" || "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
@@ -148,7 +167,22 @@ export default {
       return isJPG && isLt2M;
     },
     submitFn(formData) {
+      formData.goods_img = this.imgData;
       console.log("提交了", formData);
+      postGoodsApi(formData).then((res) => {
+        if (res.meta.state == "201") {
+          this.$message({
+            message: res.meta.msg,
+            type: "success",
+          });
+          this.jump("/goods");
+        } else {
+          this.$message({
+            message: res.meta.msg,
+            type: "error",
+          });
+        }
+      });
     },
   },
 };

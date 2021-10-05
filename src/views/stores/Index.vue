@@ -19,7 +19,7 @@
 
 <script>
 // import tableData from "~mock/stores/index.js";
-import { getstoresApi } from "@/api/stores";
+import { getStoresApi, deleteStoresApi } from "@/api/stores";
 export default {
   data() {
     return {
@@ -31,7 +31,7 @@ export default {
         start_time: "",
         end_time: "",
       },
-      currentPage: 5,
+      currentPage: 1,
       // 编号、封面60x60、标题、好评、差评、总评、销量、联系方式、营业时间
       columns: [
         { title: "编号", field: "id", fixed: "left" },
@@ -84,9 +84,41 @@ export default {
     this.initDataFn();
   },
   methods: {
+    // 删除列表数据
+    deleteFn(row) {
+      // console.log("删除", row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteStoresApi({ store_id: row.id }).then((res) => {
+            // console.log(res);
+            if (res.meta.state == 200) {
+              this.$message({
+                type: "success",
+                message: `${res.meta.msg}!`,
+              });
+              this.initDatFn();
+            } else {
+              this.$message({
+                type: "error",
+                message: `${res.meta.msg}!`,
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     initDataFn() {
-      getstoresApi(this.params).then((res) => {
-        console.log(res);
+      getStoresApi(this.params).then((res) => {
+        // console.log(res);
         this.tableData = res.data.list;
         this.tableDataTotal = parseInt(res.data.total);
       });

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { getgoodsApi } from "@/api/goods";
+import { getGoodsApi, deleteGoodsApi } from "@/api/goods";
 export default {
   data() {
     return {
@@ -33,34 +33,34 @@ export default {
       currentPage: 5,
       // 编号、所属门店、封面60x60、标题、库存、市场价、销售价、创建于、上架、操作
       columns: [
-        { title: "编号", field: "goods_numberd" },
-        { title: "所属门店", field: "sub_stores" },
+        { title: "编号", field: "goods_id" },
+        { title: "所属门店", field: "goods_name" },
         {
           title: "封面",
           type: "img",
           payload: {
-            field: "img",
+            field: "goods_img",
           },
         },
-        {
-          title: "标题",
-          type: "tips",
-          payload: {
-            field: "title",
-          },
-        },
-        { title: "库存", field: "repertory" },
+        // {
+        //   title: "标题",
+        //   type: "tips",
+        //   payload: {
+        //     field: "title",
+        //   },
+        // },
+        { title: "库存", field: "goods_number" },
         { title: "市场价", field: "market_price" },
-        { title: "销售价", field: "sell_price" },
-        { title: "创建于", field: "work" },
-        {
-          title: "上架",
-          type: "switch",
-          payload: {
-            field: "state",
-            change: (row) => console.log("冻结", row),
-          },
-        },
+        { title: "销售价", field: "shop_price" },
+        { title: "创建于", field: "create_time" },
+        // {
+        //   title: "上架",
+        //   type: "switch",
+        //   payload: {
+        //     field: "state",
+        //     change: (row) => console.log("冻结", row),
+        //   },
+        // },
         {
           title: "操作",
           width: "260",
@@ -82,6 +82,7 @@ export default {
               type: "danger",
               click: (row) => {
                 console.log("删除", row);
+                this.row = row;
                 this.deleteFn(row);
               },
             },
@@ -97,9 +98,41 @@ export default {
     this.initDataFn();
   },
   methods: {
+    // 删除列表数据
+    deleteFn(row) {
+      // console.log("删除", row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteGoodsApi({ goods_id: row.goods_id }).then((res) => {
+            // console.log(res);
+            if (res.meta.state == 200) {
+              this.$message({
+                type: "success",
+                message: `${res.meta.msg}!`,
+              });
+              this.initDataFn();
+            } else {
+              this.$message({
+                type: "error",
+                message: `${res.meta.msg}!`,
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     initDataFn() {
-      getgoodsApi(this.params).then((res) => {
-        console.log(res);
+      getGoodsApi(this.params).then((res) => {
+        // console.log(res);
         this.tableData = res.data.list;
         this.tableDataTotal = parseInt(res.data.total);
       });

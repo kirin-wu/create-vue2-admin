@@ -205,11 +205,13 @@ export default {
       this.menuIcon = this.isCollapse ? "el-icon-s-unfold" : "el-icon-s-fold";
       this.menuWidth = this.isCollapse ? "64px" : "200px";
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+    handleOpen() {
+      // handleOpen(key, keyPath) {
+      // console.log(key, keyPath);
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleClose() {
+      // handleClose(key, keyPath) {
+      // console.log(key, keyPath);
     },
     // ##监控路由变化
   },

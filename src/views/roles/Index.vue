@@ -124,7 +124,7 @@ export default {
     };
   },
   created() {
-    this.initDateFn();
+    this.initDataFn();
   },
   methods: {
     deleteFn(row) {
@@ -142,7 +142,7 @@ export default {
                 type: "success",
                 message: `${res.meta.msg}!`,
               });
-              this.initDateFn();
+              this.initDataFn();
             } else {
               this.$message({
                 type: "error",
@@ -158,7 +158,7 @@ export default {
           });
         });
     },
-    initDateFn() {
+    initDataFn() {
       getRolesApi(this.params).then((res) => {
         // console.log(res);
         this.tableData = res.data;

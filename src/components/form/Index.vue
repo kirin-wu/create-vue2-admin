@@ -15,6 +15,7 @@
         :options="item.payload.options"
         v-model="formData[item.field]"
         change-on-select
+        :props="item.payload.props || { label: 'label' }"
         @change="item.payload.change"
       ></el-cascader>
       <!-- ###级联选择器 -->

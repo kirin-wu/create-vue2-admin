@@ -6,12 +6,12 @@
     <!-- ##上传头像 -->
     <el-upload
       class="qf-upload"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://kg.zhaodashen.cn/mt/admin/upload.jsp"
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
     >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <img v-if="img" :src="img" class="avatar" />
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
     <!-- ##上传头像 -->
@@ -46,10 +46,7 @@ export default {
           field: "title",
           type: "text",
           clearable: true,
-          rules: [
-            { required: true, message: "标题不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
-          ],
+          rules: [{ required: true, message: "标题不能为空", trigger: "blur" }],
           payload: {
             width: "500px",
           },
@@ -58,46 +55,39 @@ export default {
         {
           label: "起送",
           width: "",
-          field: "start_send",
+          field: "start_price",
           type: "text",
           payload: {
             width: "300px",
           },
-          rules: [
-            { required: true, message: "起送不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
-          ],
+          rules: [{ required: true, message: "起送不能为空", trigger: "blur" }],
         },
         {
           label: "夜间配送",
           width: "",
-          field: "night_send",
+          field: "send_price",
           type: "text",
           payload: {
             width: "300px",
           },
           rules: [
             { required: true, message: "夜间配送不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
           ],
         },
         {
           label: "人均",
           width: "",
-          field: "per_capita",
+          field: "avg_price",
           type: "text",
           payload: {
             width: "300px",
           },
-          rules: [
-            { required: true, message: "人均不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
-          ],
+          rules: [{ required: true, message: "人均不能为空", trigger: "blur" }],
         },
         {
           label: "电话",
           width: "",
-          field: "mobile",
+          field: "tel",
           type: "text",
           payload: {
             width: "300px",
@@ -110,39 +100,44 @@ export default {
         {
           label: "营业时间",
           width: "",
-          field: "time",
+          field: "work_time",
           type: "text",
           payload: {
             width: "300px",
           },
           rules: [
             { required: true, message: "营业时间不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在3-6个字符", trigger: "blur" },
           ],
         },
       ],
       formData: {
         title: "",
-        img: "",
-        start_send: "",
-        night_send: "",
-        per_capita: "",
-        mobile: "",
-        time: "",
+        start_price: "",
+        send_price: "",
+        avg_price: "",
+        tel: "",
+        work_time: "",
       },
-      imageUrl: "",
+      img: "", //图片预览
+      imgData: "", //接口使用
     };
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      // console.log(res);
+      if (res.meta.state == 201) {
+        this.img = URL.createObjectURL(file.raw);
+        this.imgData = res.data.img;
+      } else {
+        this.$message.error(res.meta.msg);
+      }
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpeg" || "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
