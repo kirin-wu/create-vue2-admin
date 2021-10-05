@@ -116,7 +116,7 @@ export default {
   methods: {
     initDateFn() {
       getHistoryApi(this.params).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.tableData = res.data.list;
         this.tableDataTotal = parseInt(res.data.total);
       });
@@ -130,12 +130,12 @@ export default {
       this.initDateFn();
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
       this.params.pagesize = val;
       this.initDateFn();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.params.pagenum = val;
       this.initDateFn();
     },

@@ -1,10 +1,13 @@
 import router from "@/router";
 import store from "@/store";
 
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 // ## 白名单
 const whiteList = ["/login", "/login/sms", "/login/token", "/404"];
 // ## 导航守卫
 router.beforeEach((to, from, next) => {
+  NProgress.start();
   if (whiteList.indexOf(to.path) != -1) {
     next();
   } else {
@@ -19,4 +22,8 @@ router.beforeEach((to, from, next) => {
       next({ path: "/login" });
     }
   }
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
