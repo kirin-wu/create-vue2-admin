@@ -66,6 +66,7 @@
           <i class="el-icon-full-screen"></i>
         </div>
       </div>
+      <!-- # 显示子组件 -->
       <div class="content">
         <router-view />
       </div>
