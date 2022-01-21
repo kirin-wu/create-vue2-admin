@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
 
-import Admin from "../views/admin/Index.vue";
+import Admin from "../views/admin/index.vue";
 // import Test from "@/views/admin/Test.vue";
 import Welcome from "../views/Welcome.vue";
 // import History from "../views/admin/History.vue";
