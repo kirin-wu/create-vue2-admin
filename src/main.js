@@ -11,6 +11,8 @@ Vue.use(ElementUI);
 // 配置 全局初始化样式
 import "@/assets/css/reset.scss";
 
+require("echarts/extension/bmap/bmap");
+
 // 配置 全局组件 form组件 table组件 card组件 page组件
 import MtFrom from "@/components/form/Index";
 import MtTable from "@/components/table/Index";
