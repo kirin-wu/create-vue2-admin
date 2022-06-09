@@ -7,7 +7,6 @@ import * as echarts from "echarts";
 import axios from "axios";
 // import LiangXi from "../../assets/liangxi.json";
 // import data from "@/assets/data.json";
-
 export default {
   name: "Map",
   data() {
