@@ -13,6 +13,11 @@ import "@/assets/css/reset.scss";
 
 require("echarts/extension/bmap/bmap");
 
+// JSAPI key搭配静态安全密钥以明文设置（不安全，建议开发环境用）：
+window._AMapSecurityConfig = {
+  securityJsCode: "f114d2eef985d77637179b439a25ceca",
+};
+
 // 配置 全局组件 form组件 table组件 card组件 page组件
 import MtFrom from "@/components/form/Index";
 import MtTable from "@/components/table/Index";

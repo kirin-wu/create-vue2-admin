@@ -15,9 +15,16 @@ export default {
   methods: {
     initAMap() {
       AMapLoader.load({
-        key: "d09ab504ad2e0432b952109318e79dd2", //设置您的key,这里key需要申请一个
+        // key: "d09ab504ad2e0432b952109318e79dd2", //设置您的key,这里key需要申请一个
+        key: "448e60724441f609e176b03f7900c1a4", //设置您的key,这里key需要申请一个
         version: "1.4.15",
-        plugins: ["AMap.ToolBar", "AMap.Driving", "AMap.DistrictSearch"],
+        plugins: [
+          "AMap.ToolBar",
+          "AMap.Driving",
+          "AMap.DistrictSearch",
+          "AMap.ElasticMarker",
+          "AMap.CitySearch",
+        ],
         AMapUI: {
           version: "1.1",
           plugins: [],
@@ -42,21 +49,20 @@ export default {
               }
               // 创建map地图实例
               this.map = new AMap.Map("container", {
-                center: [120.30297, 31.56597], // 初始经纬度
+                center: [120.296591, 31.575719], // 初始经纬度
                 zoom: 12.2, // 缩放等级
                 pitch: 0, // 俯仰角度2D下无效
                 viewMode: "3D", // 地图视图模式
                 features: ["bg", "point", "building"], //地图上显示的元素种类
                 mask: mask, // Map 实例指定掩模的路径
-                mapStyle: "amap://styles/normal", //设置地图的显示样式
+                mapStyle: "amap://styles/a35cade9eadc67bdff65f0dcad0b8255", //设置地图的显示样式
                 resizeEnable: true, // 拖拽
                 dragEnable: true,
               });
-
               // 添加高度面
               var object3Dlayer = new AMap.Object3DLayer({ zIndex: 1 });
               this.map.add(object3Dlayer);
-              var height = 6000;
+              var height = 4000;
               var color = "#298ded";
               var wall = new AMap.Object3D.Wall({
                 path: bounds,
@@ -75,15 +81,26 @@ export default {
                   map: this.map,
                 });
               }
+              // 创建点标记
+              var marker = new AMap.Marker({
+                position: this.map.getCenter(),
+                icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+                offset: new AMap.Pixel(-13, -30),
+              });
+
+              marker.setMap(this.map);
+
+              // 设置鼠标划过点标记显示的文字提示
+              marker.setTitle("我是marker的title");
+
+              // 设置label标签
+              // label默认蓝框白底左上角显示，样式className为：amap-marker-label
+              marker.setLabel({
+                offset: new AMap.Pixel(20, 20), //设置文本标注偏移量
+                content: "<div class='info'>南禅寺</div>", //设置文本标注内容
+                direction: "right", //设置文本标注方位
+              });
             });
-            // 创建点标记
-            var marker = new AMap.Marker({
-              position: new AMap.LngLat(120.30297, 31.56597),
-              offset: new AMap.Pixel(-10, -10),
-              icon: "//vdata.amap.com/icons/b18/1/2.png", // 添加 Icon 图标 URL
-              title: "南禅寺景区",
-            });
-            this.map.add(marker);
           });
         })
         .catch((e) => {
