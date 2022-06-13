@@ -6,7 +6,7 @@
 import * as echarts from "echarts";
 import axios from "axios";
 // import LiangXi from "../../assets/liangxi.json";
-// import data from "@/assets/data.json";
+// import LiangXiSVG from "@/assets";
 export default {
   name: "Map",
   data() {
@@ -30,7 +30,7 @@ export default {
           echarts.registerMap("liangxi", res.data);
           this.$nextTick(() => {
             // 初始化地图
-            this.map = echarts.init(this.$refs["mapEcharts"]);
+            let myChart = echarts.init(this.$refs["mapEcharts"]);
             // 设置基础配置项
             const option = {
               // 悬浮窗
@@ -103,48 +103,17 @@ export default {
                   zlevel: -2,
                 },
               ],
-              // 要显示的散点数据
-              series: [
-                // map
-                {
-                  type: "map",
-                  // 使用百度地图坐标系
-                  map: "chongq",
-                  aspectScale: 1,
-                  roam: false, // 是否允许缩放
-                  zoom: 1.2, // 默认显示级别
-                  layoutSize: "80%",
-                  layoutCenter: ["50%", "50%"],
-                  itemStyle: {
-                    normal: {
-                      borderColor: "rgba(46, 137, 225,.8)",
-                      borderWidth: 4,
-                      shadowColor: "#6FFDFF",
-                      shadowOffsetY: 0,
-                      shadowBlur: 10,
-                      areaColor: "rgba(41, 125, 207,.6)",
-                    },
-                  },
-                  emphasis: {
-                    itemStyle: {
-                      areaColor: "#0160AD",
-                    },
-                    label: {
-                      show: 0,
-                      color: "#fff",
-                    },
-                  },
-                  zlevel: -3,
-                },
-              ],
               bmap: {
                 center: [120.30297, 31.56597],
                 zoom: 15,
-                roam: "true",
+                roam: false,
               },
             };
             // 将配置应用到地图上
-            this.map.setOption(option);
+            myChart.setOption(option);
+            // 获取百度地图实例，使用百度地图自带的控件
+            // var bmap = myChart.getModel().getComponent("bmap").getBMap();
+            // bmap.removeControl(new window.BMap.CopyrightControl());
           });
         });
     },
@@ -160,5 +129,21 @@ export default {
   height: 600px;
   width: 500px;
   background: #050f29;
+}
+/*去掉地图logo*/
+.BMap_cpyCtrl {
+  display: none;
+}
+
+.anchorBL {
+  display: none;
+}
+
+.amap-logo img {
+  display: none;
+}
+
+.amap-copyright {
+  opacity: 0;
 }
 </style>

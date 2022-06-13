@@ -42,6 +42,9 @@ Vue.use({
 // 配置 全局混入 && 过滤器
 import Mixin from "@/utils/mixins.js";
 import Filters from "@/utils/filters.js";
+import utils from "@/utils/index.js";
+Vue.prototype.$utils = utils;
+
 import "../permission";
 Vue.use({
   install() {
