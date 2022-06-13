@@ -6,8 +6,7 @@ import Login from "@/views/login/Index.vue";
 import LoginMobile from "@/views/login/Mobile.vue";
 import LoginToken from "@/views/login/Token";
 import Map from "@/views/map";
-import M from "@/views/leaflet";
-import G from "@/views/gaode";
+import GaoDe from "@/views/gaode";
 
 Vue.use(VueRouter);
 
@@ -39,14 +38,9 @@ const routes = [
     component: Map,
   },
   {
-    path: "/m",
-    name: "m",
-    component: M,
-  },
-  {
-    path: "/g",
-    name: "G",
-    component: G,
+    path: "/gaode",
+    name: "gaode",
+    component: GaoDe,
   },
   {
     path: "/login",
