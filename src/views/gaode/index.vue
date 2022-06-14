@@ -49,8 +49,8 @@ export default {
               }
               // 创建map地图实例
               this.map = new AMap.Map("container", {
-                center: [120.296591, 31.575719], // 初始经纬度
-                zoom: 12.2, // 缩放等级
+                center: [120.30297, 31.56597], // 初始经纬度 梁溪区
+                zoom: 12, // 缩放等级
                 pitch: 0, // 俯仰角度2D下无效
                 viewMode: "3D", // 地图视图模式
                 features: ["bg", "point", "building"], //地图上显示的元素种类
@@ -81,23 +81,27 @@ export default {
                   map: this.map,
                 });
               }
+
               // 创建点标记
               var marker = new AMap.Marker({
-                position: this.map.getCenter(),
-                icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-                offset: new AMap.Pixel(-13, -30),
+                position: [120.3084, 31.56672], // 南禅寺
+                icon: "http://58.215.18.189:18080/lx/static/img/mapIcon/daoyou.png",
+                offset: new AMap.Pixel(0, 0),
               });
 
               marker.setMap(this.map);
 
-              // 设置鼠标划过点标记显示的文字提示
-              marker.setTitle("我是marker的title");
-
               // 设置label标签
-              // label默认蓝框白底左上角显示，样式className为：amap-marker-label
               marker.setLabel({
-                offset: new AMap.Pixel(0, 0), //设置文本标注偏移量
-                content: "<div class='info'>无锡市南禅寺景区</div>", //设置文本标注内容
+                offset: new AMap.Pixel(10, 20), //设置文本标注偏移量
+                content: `<div class='info'>
+                  <p class='title'>无锡市南禅寺景区<span>X</span><p>
+                  <p>所属街道</p>
+                  <p>等级</p>
+                  <p>负责人</p>
+                  <p>联系方式</p>
+                  <p>地址</p>
+                </div>`, //设置文本标注内容
                 direction: "bottom-right", //设置文本标注方位
               });
             });
@@ -117,5 +121,27 @@ export default {
   margin: 0 auto;
   position: relative;
   background: transparent !important;
+  ::v-deep.amap-marker-label {
+    width: 200px;
+    height: 120px;
+    background: #0f405d;
+    border-radius: 6px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    .title {
+      color: #fff;
+      position: relative;
+      span {
+        position: absolute;
+        top: 0%;
+        right: 2%;
+        background: #0b547b;
+      }
+    }
+    p {
+      color: #dadee1;
+      padding: 5px 10px;
+    }
+  }
 }
 </style>

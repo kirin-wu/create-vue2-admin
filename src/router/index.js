@@ -7,6 +7,7 @@ import LoginMobile from "@/views/login/Mobile.vue";
 import LoginToken from "@/views/login/Token";
 import Map from "@/views/map";
 import GaoDe from "@/views/gaode";
+import Test from "@/views/test";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
     path: "/gaode",
     name: "gaode",
     component: GaoDe,
+  },
+  {
+    path: "/test",
+    name: "test",
+    component: Test,
   },
   {
     path: "/login",
