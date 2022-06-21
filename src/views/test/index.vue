@@ -63,28 +63,14 @@ export default {
           gltf.scene.name = newName;
           gltf.scene.position.set(0, 0, 0); //定位
           gltf.scene.rotation.y = -Math.PI / 2; //转动 这些有点类似canvas 或者 c3的动画
-          // 模型是否否需要阴影
-          console.log(
-            1111,
-            gltf.scene.children[0].children[0].children[0].children[0]
-          );
-
-          // https://blog.csdn.net/darkproc/article/details/80015901
-          // 设置桌腿 材质颜色
-          gltf.scene.children[0].children[0].children[0].children[0].material =
-            new THREE.MeshBasicMaterial({
-              color: 0xa66d4a,
-            });
-          // 设置球体 材质颜色
-          gltf.scene.children[1].material = new THREE.MeshBasicMaterial({
-            color: 0x8689ff,
-          });
-          // 设置桌面 材质颜色
-          gltf.scene.children[2].material = new THREE.MeshBasicMaterial({
-            color: 0x947672,
-          });
 
           gltf.scene.traverse((obj) => {
+            // 刚开始图形是黑色
+            if (obj.isMesh) {
+              obj.material.emissive = obj.material.color;
+              obj.material.emissiveMap = obj.material.map;
+            }
+            // 模型是否否需要阴影
             obj.castShadow = true;
             obj.receiveShadow = true;
           });
@@ -115,11 +101,7 @@ export default {
     },
     // 创建光源
     Lighting() {
-      //点光源
-      var point = new THREE.PointLight(0xffffff);
-      point.position.set(400, 200, 300); //点光源位置
-      // 通过add方法插入场景中，不插入的话，渲染的时候不会获取光源的信息进行光照计算
-      this.scene.add(point); //点光源添加到场景中
+      this.scene.add(new THREE.AmbientLight(0x666666)); //环境光
     },
     render() {
       // 更新动画
