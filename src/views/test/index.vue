@@ -10,6 +10,11 @@ export default {
   mounted() {
     this.init();
   },
+  data() {
+    return {
+      state: [],
+    };
+  },
   methods: {
     init() {
       // 场景
@@ -23,8 +28,8 @@ export default {
       /**正投影相机对象*/
       // 构造函数格式：OrthographicCamera( left, right, top, bottom, near, far )
       // 构造函数格式：PerspectiveCamera( fov, aspect, near, far )
-      this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-      this.camera.position.set(60, 100, 200); //设置相机位置
+      this.camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 1000);
+      this.camera.position.set(20, 10, 20); //设置相机位置
       this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
 
       // 渲染器
@@ -52,7 +57,6 @@ export default {
       this.render();
     },
     getGLB(name) {
-      console.log(1, name);
       this.gltfLoader = new GLTFLoader();
       let newName = name ? name : "桌子-gltf";
       this.gltfLoader.load(
@@ -60,7 +64,6 @@ export default {
         `${process.env.BASE_URL}model/${newName}.gltf`,
         // require("@/assets/img/桌子-gltf.gltf"),
         (gltf) => {
-          console.log(gltf, "gltf");
           gltf.scene.name = newName;
           gltf.scene.position.set(0, 0, 0); //定位
           gltf.scene.rotation.y = -Math.PI / 2; //转动 这些有点类似canvas 或者 c3的动画
@@ -72,6 +75,7 @@ export default {
           this.scene.add(gltf.scene);
           //遍历当前模型的动画
           gltf.animations.forEach((i) => {
+            console.log(i);
             this.state.push(i.name);
             this[i.name] = this.animationMixer.clipAction(i);
           });
