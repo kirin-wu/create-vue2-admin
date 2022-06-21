@@ -24,14 +24,10 @@ export default {
       // 创建一个远景相机
       var width = window.innerWidth; //窗口宽度
       var height = window.innerHeight; //窗口高度
-      // var k = width / height; //窗口宽高比
-      // var s = 100; //三维场景缩放系数
-      /**正投影相机对象*/
-      // 构造函数格式：OrthographicCamera( left, right, top, bottom, near, far )
-      // 构造函数格式：PerspectiveCamera( fov, aspect, near, far )
+
+      // 透视投影相机对象PerspectiveCamera( fov, aspect, near, far )
       this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
-      // 正式/后视 z 角度
-      this.camera.position.set(-1000, 700, 700); //设置相机位置
+      this.camera.position.set(-800, 700, 700); //设置相机位置
       this.camera.lookAt(0, 0, 0); //设置相机方向(指向的场景对象)
 
       // 渲染器
@@ -39,7 +35,7 @@ export default {
       // 是否显示阴影
       this.renderer.shadowMapEnabled = true;
       // 设置渲染氛围颜色
-      this.renderer.setClearColor(new THREE.Color(0xffffff));
+      this.renderer.setClearColor(new THREE.Color(0xcecece));
       // 鼠标拖拽
       this.orbitControls = new OrbitControls(
         this.camera,
@@ -52,11 +48,8 @@ export default {
         .getElementById("container")
         .appendChild(this.renderer.domElement);
       window.addEventListener("resize", () => this.onWindowResize());
-
-      // this.camera.position.set(5, 2, 1);
-
+      this.Lighting();
       this.getFloor();
-      // this.getLigt();
       this.getGLB();
       this.render();
     },
@@ -66,12 +59,22 @@ export default {
       this.gltfLoader.load(
         //文件加载 文件地址 我用的本地文件模拟的 vue 必须把文件放入public目录 否则文件会被编译 我是放入了public目录的model文件 说以地址为${process.env.BASE_URL}model
         `${process.env.BASE_URL}model/${newName}.gltf`,
-        // require("@/assets/img/桌子-gltf.gltf"),
         (gltf) => {
           gltf.scene.name = newName;
           gltf.scene.position.set(0, 0, 0); //定位
           gltf.scene.rotation.y = -Math.PI / 2; //转动 这些有点类似canvas 或者 c3的动画
           // 模型是否否需要阴影
+          console.log(1111, gltf);
+
+          // 设置球体 材质颜色
+          gltf.scene.children[1].material = new THREE.MeshBasicMaterial({
+            color: 0x8689ff,
+          });
+          // 设置桌面 材质颜色
+          gltf.scene.children[2].material = new THREE.MeshBasicMaterial({
+            color: 0x947672,
+          });
+
           gltf.scene.traverse((obj) => {
             obj.castShadow = true;
             obj.receiveShadow = true;
@@ -100,6 +103,14 @@ export default {
       //是否接受阴影投射 (非常重要)
       floor.receiveShadow = true;
       this.scene.add(floor);
+    },
+    // 创建光源
+    Lighting() {
+      //点光源
+      var point = new THREE.PointLight(0xffffff);
+      point.position.set(400, 200, 300); //点光源位置
+      // 通过add方法插入场景中，不插入的话，渲染的时候不会获取光源的信息进行光照计算
+      this.scene.add(point); //点光源添加到场景中
     },
     render() {
       // 更新动画
