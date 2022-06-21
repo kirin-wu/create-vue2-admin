@@ -47,7 +47,7 @@ export default {
       document
         .getElementById("container")
         .appendChild(this.renderer.domElement);
-      window.addEventListener("resize", () => this.onWindowResize());
+      // window.addEventListener("resize", () => this.onWindowResize());
       this.Lighting();
       this.getFloor();
       this.getGLB();
@@ -64,8 +64,17 @@ export default {
           gltf.scene.position.set(0, 0, 0); //定位
           gltf.scene.rotation.y = -Math.PI / 2; //转动 这些有点类似canvas 或者 c3的动画
           // 模型是否否需要阴影
-          console.log(1111, gltf);
+          console.log(
+            1111,
+            gltf.scene.children[0].children[0].children[0].children[0]
+          );
 
+          // https://blog.csdn.net/darkproc/article/details/80015901
+          // 设置桌腿 材质颜色
+          gltf.scene.children[0].children[0].children[0].children[0].material =
+            new THREE.MeshBasicMaterial({
+              color: 0xa66d4a,
+            });
           // 设置球体 材质颜色
           gltf.scene.children[1].material = new THREE.MeshBasicMaterial({
             color: 0x8689ff,
