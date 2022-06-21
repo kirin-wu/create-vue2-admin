@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       state: [],
+      camera: null,
     };
   },
   methods: {
@@ -28,9 +29,10 @@ export default {
       /**正投影相机对象*/
       // 构造函数格式：OrthographicCamera( left, right, top, bottom, near, far )
       // 构造函数格式：PerspectiveCamera( fov, aspect, near, far )
-      this.camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 1000);
-      this.camera.position.set(20, 10, 20); //设置相机位置
-      this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
+      this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
+      // 正式/后视 z 角度
+      this.camera.position.set(-1000, 700, 700); //设置相机位置
+      this.camera.lookAt(0, 0, 0); //设置相机方向(指向的场景对象)
 
       // 渲染器
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -50,7 +52,9 @@ export default {
         .getElementById("container")
         .appendChild(this.renderer.domElement);
       window.addEventListener("resize", () => this.onWindowResize());
-      this.camera.position.set(5, 2, 1);
+
+      // this.camera.position.set(5, 2, 1);
+
       this.getFloor();
       // this.getLigt();
       this.getGLB();
@@ -75,7 +79,7 @@ export default {
           this.scene.add(gltf.scene);
           //遍历当前模型的动画
           gltf.animations.forEach((i) => {
-            console.log(i);
+            // console.log(i);
             this.state.push(i.name);
             this[i.name] = this.animationMixer.clipAction(i);
           });
@@ -107,3 +111,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+#container {
+  width: 100%;
+  height: 100%;
+}
+</style>
