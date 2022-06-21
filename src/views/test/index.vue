@@ -29,7 +29,8 @@ export default {
       this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 2000);
       this.camera.position.set(-800, 700, 700); //设置相机位置
       this.camera.lookAt(0, 0, 0); //设置相机方向(指向的场景对象)
-
+      // 灯光
+      this.scene.add(new THREE.AmbientLight(0xd13131)); //环境光
       // 渲染器
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       // 是否显示阴影
@@ -48,7 +49,6 @@ export default {
         .getElementById("container")
         .appendChild(this.renderer.domElement);
       // window.addEventListener("resize", () => this.onWindowResize());
-      this.Lighting();
       this.getFloor();
       this.getGLB();
       this.render();
@@ -98,10 +98,6 @@ export default {
       //是否接受阴影投射 (非常重要)
       floor.receiveShadow = true;
       this.scene.add(floor);
-    },
-    // 创建光源
-    Lighting() {
-      this.scene.add(new THREE.AmbientLight(0x666666)); //环境光
     },
     render() {
       // 更新动画
