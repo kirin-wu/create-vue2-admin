@@ -30,13 +30,13 @@ export default {
       this.camera.position.set(-800, 700, 700); //设置相机位置
       this.camera.lookAt(0, 0, 0); //设置相机方向(指向的场景对象)
       // 灯光
-      this.scene.add(new THREE.AmbientLight(0xd13131)); //环境光
+      this.scene.add(new THREE.AmbientLight(0xffffff)); //环境光
       // 渲染器
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
       // 是否显示阴影
       this.renderer.shadowMapEnabled = true;
       // 设置渲染氛围颜色
-      this.renderer.setClearColor(new THREE.Color(0xcecece));
+      this.renderer.setClearColor(new THREE.Color(0x6f6f6f));
       // 鼠标拖拽
       this.orbitControls = new OrbitControls(
         this.camera,
@@ -74,10 +74,14 @@ export default {
             obj.castShadow = true;
             obj.receiveShadow = true;
           });
+          // // 设置桌腿 材质颜色
+          // gltf.scene.children[0].children[0].children[0].children[0].material =
+          //   new THREE.MeshBasicMaterial({
+          //     color: 0xaf7a56,
+          //   });
           this.scene.add(gltf.scene);
           //遍历当前模型的动画
           gltf.animations.forEach((i) => {
-            // console.log(i);
             this.state.push(i.name);
             this[i.name] = this.animationMixer.clipAction(i);
           });
