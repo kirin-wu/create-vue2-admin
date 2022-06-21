@@ -92,18 +92,18 @@ export default {
               marker.setMap(this.map);
 
               // 设置label标签
-              marker.setLabel({
-                offset: new AMap.Pixel(10, 20), //设置文本标注偏移量
-                content: `<div class='info'>
-                  <p class='title'>无锡市南禅寺景区<span>X</span><p>
-                  <p>所属街道</p>
-                  <p>等级</p>
-                  <p>负责人</p>
-                  <p>联系方式</p>
-                  <p>地址</p>
-                </div>`, //设置文本标注内容
-                direction: "bottom-right", //设置文本标注方位
-              });
+              // marker.setLabel({
+              //   offset: new AMap.Pixel(10, 20), //设置文本标注偏移量
+              //   content: `<div class='info'>
+              //     <p class='title'>无锡市南禅寺景区<span>X</span><p>
+              //     <p>所属街道</p>
+              //     <p>等级</p>
+              //     <p>负责人</p>
+              //     <p>联系方式</p>
+              //     <p>地址</p>
+              //   </div>`, //设置文本标注内容
+              //   direction: "bottom-right", //设置文本标注方位
+              // });
             });
           });
         })
