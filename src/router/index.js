@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Admin from "../views/admin/index.vue";
+import Test1 from "../views/admin/Test.vue";
 import Welcome from "../views/Welcome.vue";
 import Login from "@/views/login/Index.vue";
 import LoginMobile from "@/views/login/Mobile.vue";
@@ -32,6 +33,11 @@ const routes = [
         meta: { name1: "后台首页", name2: "后台首页" },
       },
     ],
+  },
+  {
+    path: "/test1",
+    name: "test1",
+    component: Test1,
   },
   {
     path: "/map",
