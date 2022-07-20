@@ -24,6 +24,7 @@ export default {
           "AMap.DistrictSearch",
           "AMap.ElasticMarker",
           "AMap.CitySearch",
+          "Amp.Object3DLayer",
         ],
         AMapUI: {
           version: "1.1",
@@ -34,6 +35,7 @@ export default {
         },
       })
         .then((AMap) => {
+          this.AMap = AMap;
           AMap.plugin("AMap.DistrictSearch", () => {
             var districtSearch = new AMap.DistrictSearch({
               subdistrict: 1, // 显示下级行政区级数 可选值：0、1、2、3
@@ -90,26 +92,26 @@ export default {
               });
 
               marker.setMap(this.map);
-
-              // 设置label标签
-              // marker.setLabel({
-              //   offset: new AMap.Pixel(10, 20), //设置文本标注偏移量
-              //   content: `<div class='info'>
-              //     <p class='title'>无锡市南禅寺景区<span>X</span><p>
-              //     <p>所属街道</p>
-              //     <p>等级</p>
-              //     <p>负责人</p>
-              //     <p>联系方式</p>
-              //     <p>地址</p>
-              //   </div>`, //设置文本标注内容
-              //   direction: "bottom-right", //设置文本标注方位
-              // });
+              marker.on("click", this.markerClick);
             });
           });
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+    markerClick(e) {
+      console.log(e.target);
+      let icon = e.target.getIcon();
+
+      e.target.setIcon(
+        this.AMap.Icon({
+          size: this.AMap.Size(40, 40),
+          image: icon,
+        })
+      );
+
+      e.target.hide();
     },
   },
 };

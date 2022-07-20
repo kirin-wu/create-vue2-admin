@@ -1,11 +1,18 @@
 <template>
-  <div class="chart" :id="id"></div>
+  <div class="echart" :id="id"></div>
 </template>
 <script>
+import Mock from "mockjs";
 import echarts from "echarts";
 export default {
-  name: "vue-chart",
+  name: "VueBaseChart",
   props: {
+    id: {
+      type: String,
+      default: () => {
+        return "echart" + Mock.mock("@guid()");
+      },
+    },
     option: {
       type: Object,
       required: true,
@@ -13,11 +20,16 @@ export default {
   },
   data() {
     return {
-      id: "chart" + new Date().getTime(),
+      myBaseChart: null,
     };
   },
   mounted() {
     this.initEcharts();
+  },
+  beforeDestroy() {
+    if (this.myBaseChart) {
+      this.myBaseChart.clear();
+    }
   },
   watch: {
     option: {
@@ -28,19 +40,24 @@ export default {
     },
   },
   methods: {
+    /**
+     * @description 初始化echarts图表
+     * @author
+     */
     initEcharts() {
       const dom = document.getElementById(this.id);
       if (!dom) return;
       if (this.option) {
-        let myChart = echarts.init(dom);
-        myChart.setOption(this.option);
+        this.myBaseChart = echarts.init(dom);
+        this.myBaseChart.setOption(this.option);
       }
+      window.removeEventListener("resize", this.myBaseChart.resize());
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.chart {
+.echart {
   width: 100%;
   height: 100%;
 }

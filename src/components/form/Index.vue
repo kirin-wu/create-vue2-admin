@@ -3,7 +3,7 @@
     <el-form-item
       v-for="(item, index) in formConfig"
       :key="index"
-      :prop="item.field"
+      :prop="item.filed"
       :label="item.label"
       :label-width="item.width"
       :rules="item.rules"
@@ -13,7 +13,7 @@
       <el-cascader
         v-if="item.type === 'cascader'"
         :options="item.payload.options"
-        v-model="formData[item.field]"
+        v-model="formData[item.filed]"
         change-on-select
         :props="item.payload.props || { label: 'label' }"
         @change="item.payload.change"
@@ -24,14 +24,14 @@
         type="text"
         :style="{ width: item.payload ? item.payload.width : '100%' }"
         :disabled="item.disabled"
-        v-model="formData[item.field]"
+        v-model="formData[item.filed]"
         v-if="item.type === 'text'"
         :clearable="item.clearable"
       ></el-input>
       <!-- ###密码输入框 -->
       <el-input
         type="password"
-        v-model="formData[item.field]"
+        v-model="formData[item.filed]"
         v-if="item.type === 'password'"
         :clearable="item.clearable"
         :show-password="item.showPassword"
@@ -39,7 +39,7 @@
       <!-- ###select选择器 -->
       <el-select
         v-if="item.type === 'select'"
-        v-model="formData[item.field]"
+        v-model="formData[item.filed]"
         placeholder="请选择"
       >
         <el-option
@@ -68,7 +68,7 @@ export default {
   // width: '0px'
   // 表格配置 一个对象代表后一个表格选项
   // formConfig: [
-  //     {label: '标题',  width: '标题宽度', field: '标题字段', type: '输入框类型', rules: []}
+  //     {label: '标题',  width: '标题宽度', filed: '标题字段', type: '输入框类型', rules: []}
   // ]
   // formBtns: [
   //     {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', },
@@ -105,7 +105,7 @@ export default {
   methods: {
     submitFn(content) {
       if (content == "重置") {
-        this.$refs.form1.resetFields();
+        this.$refs.form1.resetfileds();
       } else {
         this.$refs.form1.validate((isSuccess) => {
           if (isSuccess) {
