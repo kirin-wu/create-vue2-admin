@@ -1,39 +1,20 @@
 <template>
-  <div class="main">
-    <vue-echarts :option="option"></vue-echarts>
-  </div>
+  <my-form
+    :form-data="postData.filter"
+    :form-config="formConfig"
+    :form-btns="formBtns"
+    line-num="1"
+    @submit="handleSubmit"
+    @increase="handleIncrease"
+  ></my-form>
 </template>
 <script>
-import vueEcharts from "@/components/vue-echarts";
 export default {
-  components: {
-    vueEcharts,
-  },
   data() {
     return {
-      option: {
-        xAxis: {
-          type: "category",
-          data: ["A", "B", "C", "D"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [100, 200, 300, 400],
-            type: "bar",
-          },
-        ],
-      },
+      postData: {},
     };
   },
 };
 </script>
-<style lang="scss" scoped>
-.main {
-  width: 500px;
-  height: 500px;
-  border: 1px solid red;
-}
-</style>
+<style lang="scss"></style>

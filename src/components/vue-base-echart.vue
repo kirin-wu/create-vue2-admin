@@ -30,6 +30,9 @@ export default {
     if (this.myBaseChart) {
       this.myBaseChart.clear();
     }
+    window.removeEventListener("resize", () => {
+      this.myBaseChart.resize();
+    });
   },
   watch: {
     option: {
@@ -51,7 +54,9 @@ export default {
         this.myBaseChart = echarts.init(dom);
         this.myBaseChart.setOption(this.option);
       }
-      window.removeEventListener("resize", this.myBaseChart.resize());
+      window.addEventListener("resize", () => {
+        this.myBaseChart.resize();
+      });
     },
   },
 };

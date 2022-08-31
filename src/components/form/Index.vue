@@ -1,121 +1,132 @@
 <template>
-  <el-form :model="formData" :label-width="width" ref="form1">
-    <el-form-item
-      v-for="(item, index) in formConfig"
-      :key="index"
-      :prop="item.filed"
-      :label="item.label"
-      :label-width="item.width"
-      :rules="item.rules"
-    >
-      <!-- ##输入框 -->
-      <!-- ###级联选择器 -->
-      <el-cascader
-        v-if="item.type === 'cascader'"
-        :options="item.payload.options"
-        v-model="formData[item.filed]"
-        change-on-select
-        :props="item.payload.props || { label: 'label' }"
-        @change="item.payload.change"
-      ></el-cascader>
-      <!-- ###级联选择器 -->
-      <!-- ###文本输入框 -->
-      <el-input
-        type="text"
-        :style="{ width: item.payload ? item.payload.width : '100%' }"
-        :disabled="item.disabled"
-        v-model="formData[item.filed]"
-        v-if="item.type === 'text'"
-        :clearable="item.clearable"
-      ></el-input>
-      <!-- ###密码输入框 -->
-      <el-input
-        type="password"
-        v-model="formData[item.filed]"
-        v-if="item.type === 'password'"
-        :clearable="item.clearable"
-        :show-password="item.showPassword"
-      ></el-input>
-      <!-- ###select选择器 -->
-      <el-select
-        v-if="item.type === 'select'"
-        v-model="formData[item.filed]"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in item.payload"
-          :key="item.value"
+  <el-form
+    ref="form"
+    :model="formData"
+    :rules="rules"
+    :size="formSize"
+    :labelWidth="labelWidth"
+    :labelPosition="labelPosition"
+  >
+    <el-row v-for="(l, i) in formConfig" :key="i" :gutter="20">
+      <el-col v-for="(item, index) in l" :key="index" span="6">
+        <el-form-item
           :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-    </el-form-item>
-    <!-- ##按钮 -->
-    <el-form-item>
-      <el-button
-        v-for="(item, index) in formBtns"
-        :key="index"
-        :type="item.type"
-        @click="submitFn(item.content)"
-        >{{ item.content }}
-      </el-button>
-    </el-form-item>
+          :label-width="item.width"
+          :prop="item.field"
+          :rules="item.rules"
+        >
+          <!-- input -->
+          <el-input
+            v-if="item.type === 'text'"
+            v-model="formData[item.field]"
+            :disabled="item.disabled"
+            clearable
+          >
+          </el-input>
+
+          <!-- select -->
+          <my-select
+            v-if="item.type === 'select'"
+            v-model="formData[item.field]"
+            :type="item.payload"
+            :is-static="item.isStatic === true ? true : false"
+            placeholder="请选择"
+          >
+          </my-select>
+
+          <!-- cascader -->
+          <el-cascader
+            v-if="item.type === 'cascader'"
+            v-model="formData[item.field]"
+            :options="item.payload.options"
+            @change="handleChange"
+          ></el-cascader>
+
+          <!-- date -->
+          <el-date-picker
+            v-if="item.type === 'date'"
+            v-model="formData[item.field]"
+            type="daterange"
+            value-formData="yyyy-MM-dd HH:mm:ss"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-col>
+
+      <!-- button -->
+      <template v-if="i === lineNum">
+        <el-col :span="formBtns.length > 2 ? 6 : 4" :push="push" :pull="pull">
+          <el-form-item label-width="40px">
+            <el-button
+              v-for="(item, index) in formBtns"
+              :key="index"
+              :type="item.type"
+              size="mudium"
+              @click="handleButton(item.content)"
+            >
+              {{ item.content }}
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </template>
+    </el-row>
   </el-form>
 </template>
-
 <script>
+import MySelect from "../mySelect/index.vue";
 export default {
-  // width: '0px'
-  // 表格配置 一个对象代表后一个表格选项
-  // formConfig: [
-  //     {label: '标题',  width: '标题宽度', filed: '标题字段', type: '输入框类型', rules: []}
-  // ]
-  // formBtns: [
-  //     {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', },
-  //     {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', },
-  //     {content:'创建/更新/重置', type: 'primary/success/info/warning/danger', }
-  // ]
-  props: {
-    width: {
-      type: String,
-      default: "",
-    },
-    formConfig: {
-      type: Array,
-      required: true,
-    },
-    formBtns: {
-      type: Array,
-    },
-    row: {
-      type: Object,
-    },
+  components: {
+    MySelect,
   },
-  created() {
-    // console.log("row数据", this.row);
-    if (this.row) {
-      this.formData = this.row;
-    }
+  props: {
+    formData: {
+      // 表单数据对象
+      type: Object,
+      default: () => {},
+    },
+    rules: Array, // 校验规则
+    formSize: {
+      // 表单组件尺寸
+      type: String,
+      default: "medium",
+    },
+    labelWidth: {
+      // 表单标签宽度
+      type: String,
+      default: "80px",
+    },
+    labelPosition: {
+      // 表单标签位置
+      type: String,
+      default: "right",
+    },
   },
   data() {
     return {
-      formData: {},
+      pickerOptions: {
+        disabledDate(time) {
+          let nowDate = new Date().getTime();
+          let three = 30 * 24 * 3600 * 1000;
+          let months = nowDate - three;
+          return time.getTime() > Date.now() || time.getTime() < months;
+        },
+      },
     };
   },
   methods: {
-    submitFn(content) {
-      if (content == "重置") {
-        this.$refs.form1.resetfileds();
+    handleButton(content) {
+      if (content === "查询") {
+        this.$emit("submit", this.formData);
+      } else if (content === "新增") {
+        this.$emit("increase", true);
       } else {
-        this.$refs.form1.validate((isSuccess) => {
-          if (isSuccess) {
-            this.$emit("submit", this.formData);
-          }
-        });
+        this.$emit("other", true);
       }
     },
   },
 };
 </script>
-
-<style></style>
