@@ -104,26 +104,32 @@ export default {
       },
     },
     columns: {
+      // 表格配置
       type: Array,
       required: true,
     },
     tableData: {
+      // 表格数据
       type: Array,
       required: true,
     },
     params: {
+      // 接口参数
       type: Object,
       required: false,
     },
     tableHeight: {
+      // 表格高度
       type: String,
       required: false,
     },
     isCheckbox: {
+      // 多选框
       type: Boolean,
       default: true,
     },
     isOrder: {
+      // 序列号
       type: Boolean,
       default: true,
     },

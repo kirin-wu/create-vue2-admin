@@ -7,7 +7,7 @@
     :labelWidth="labelWidth"
     :labelPosition="labelPosition"
   >
-    <el-row v-for="(l, i) in formConfig" :key="i" :gutter="20">
+    <el-row v-for="(l, i) in formConfig" :key="i">
       <el-col v-for="(item, index) in l" :key="index" span="6">
         <el-form-item
           :label="item.label"
