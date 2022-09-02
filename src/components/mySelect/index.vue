@@ -8,8 +8,9 @@
   >
     <el-option
       v-for="item in list"
-      :key="item.codeValue"
-      :value="item.codeValue"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value"
     ></el-option>
   </el-select>
 </template>
@@ -44,7 +45,12 @@ export default {
     return {
       list: [], // 下拉框集合
       // 静态数据Map
-      staticValueMap: [],
+      staticValueMap: {
+        state: [
+          { label: "关闭", value: 0 },
+          { label: "开启", value: 1 },
+        ],
+      },
     };
   },
   watch: {
@@ -74,3 +80,4 @@ export default {
   },
 };
 </script>
+<style></style>

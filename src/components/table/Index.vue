@@ -1,26 +1,48 @@
 <template>
-  <el-table :row-key="rowkey" :data="tableData" stripe style="width: 100%">
+  <el-table
+    :data="tableData"
+    style="width: 100%"
+    :height="tableHeight"
+    @selection-change="handleSelectionChange"
+    :header-cell-style="headerStyle"
+  >
+    <!-- 勾选框 序号 -->
+    <el-table-column fixed type="selection" width="55" v-if="isCheckbox">
+    </el-table-column>
+    <el-table-column label="序号" type="index" width="55" fixed v-if="isOrder">
+    </el-table-column>
+    <!-- end -->
+
     <template v-for="(item, index) in columns">
-      <!-- ##默认 -->
+      <!-- 普通 -->
       <el-table-column
-        :fixed="item.fixed"
-        :key="index"
         v-if="item.field"
-        :label="item.title"
+        :key="index"
         :prop="item.field"
+        :label="item.name"
         :width="item.width"
       >
       </el-table-column>
-      <!-- ##默认end -->
-      <!-- ##自定义 -->
+      <!-- end -->
+
+      <!-- 自定义 -->
       <el-table-column
-        :fixed="item.fixed"
-        :key="index"
-        :label="item.title"
-        :width="item.width"
         v-else
+        :key="item.field"
+        :label="item.name"
+        :width="item.width"
+        :fixed="item.fixed"
       >
         <template slot-scope="scope">
+          <!-- 具名插槽 -->
+          <template v-if="item.slotName">
+            <slot
+              :name="item.slotName"
+              :row="scope.row[item.payload.field]"
+              :data="scope.row"
+            />
+          </template>
+
           <!-- switch -->
           <el-switch
             v-if="item.type === 'switch'"
@@ -44,45 +66,8 @@
           >
             <span> {{ scope.row[item.payload.field] | substrFilter(8) }}</span>
           </el-tooltip>
-          <!-- endtips -->
 
-          <!--  img -->
-          <img
-            v-if="item.type === 'img'"
-            width="50px"
-            :src="
-              'http://tmp00001.zhaodashen.cn/' + scope.row[item.payload.field]
-            "
-            alt="img"
-          />
-          <!--  end_img -->
-          <!--  tag -->
-          <!-- <el-tag
-            v-if="item.type === 'tag'"
-            :type="
-              item.payload.color ||
-              scope.row[item.payload.field] | elTagTypeFilter
-            "
-          >
-            {{ scope.row[item.payload.field] | cateFilter }}
-          </el-tag> -->
-
-          <el-tag
-            v-if="item.type === 'tag'"
-            :type="
-              filterFn(
-                'elTagTypeFilter',
-                item.payload.color || scope.row[item.payload.field]
-              )
-            "
-          >
-            {{
-              filterFn(item.payload.filterName, scope.row[item.payload.field])
-            }}
-          </el-tag>
-
-          <!-- end_tag -->
-          <!-- btn -->
+          <!-- button -->
           <template v-if="item.type === 'btn'">
             <el-button
               size="mini"
@@ -97,44 +82,56 @@
               <i v-else :class="item.icon"></i>
             </el-button>
           </template>
-          <!-- end_btn -->
         </template>
       </el-table-column>
+      <!-- end -->
     </template>
-    <!-- ### 自定义end -->
   </el-table>
 </template>
-
 <script>
-import Vue from "vue";
 export default {
+  name: "myTable",
   props: {
-    rowkey: {
-      type: String,
-      default: "cat_id",
-    },
-    tableData: {
-      required: true,
-      type: Array,
+    headerStyle: {
+      type: Object,
+      default: () => {
+        return {
+          background: "#fafafa",
+          color: "#555",
+          fontsize: "14px",
+          fontWeight: 400,
+        };
+      },
     },
     columns: {
-      /*
-        {title,field,...}
-        */
-      required: true,
       type: Array,
+      required: true,
+    },
+    tableData: {
+      type: Array,
+      required: true,
+    },
+    params: {
+      type: Object,
+      required: false,
+    },
+    tableHeight: {
+      type: String,
+      required: false,
+    },
+    isCheckbox: {
+      type: Boolean,
+      default: true,
+    },
+    isOrder: {
+      type: Boolean,
+      default: true,
     },
   },
-  data() {
-    return {};
-  },
   methods: {
-    filterFn(filterNanme, ...params) {
-      let tempFn = Vue.filter(filterNanme);
-      return tempFn(...params);
+    handleSelectionChange(val) {
+      this.$emit("handleSelectionChange", val);
     },
   },
 };
 </script>
-
-<style></style>

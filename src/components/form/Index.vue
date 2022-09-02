@@ -58,7 +58,7 @@
       </el-col>
 
       <!-- button -->
-      <template v-if="i === lineNum">
+      <template v-if="i == lineNum">
         <el-col :span="formBtns.length > 2 ? 6 : 4" :push="push" :pull="pull">
           <el-form-item label-width="40px">
             <el-button
@@ -88,6 +88,15 @@ export default {
       type: Object,
       default: () => {},
     },
+    formConfig: {
+      // 表单配置
+      type: Array,
+      default: () => [],
+    },
+    formBtns: {
+      type: Array,
+      default: () => [],
+    },
     rules: Array, // 校验规则
     formSize: {
       // 表单组件尺寸
@@ -103,6 +112,10 @@ export default {
       // 表单标签位置
       type: String,
       default: "right",
+    },
+    lineNum: {
+      type: Number,
+      default: 0,
     },
   },
   data() {
@@ -120,7 +133,11 @@ export default {
   methods: {
     handleButton(content) {
       if (content === "查询") {
+        // 表单校验
         this.$emit("submit", this.formData);
+      } else if (content === "重置") {
+        // 重置表单
+        this.$emit("reset", true);
       } else if (content === "新增") {
         this.$emit("increase", true);
       } else {
@@ -130,3 +147,4 @@ export default {
   },
 };
 </script>
+<style lang="scss"></style>
