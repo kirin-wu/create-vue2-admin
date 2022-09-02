@@ -23,6 +23,7 @@
 ## 查询 重置 handleSubmit handleReset
 
 ```
+![alt](../../assets/img/form-table.png)
 postData: {
         id: "",
         role_name: "",
