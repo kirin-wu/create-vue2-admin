@@ -21,9 +21,10 @@
 ## 表单按钮配置 formBtns
 
 ## 查询 重置 handleSubmit handleReset
+![alt](../../assets/img/form-table.png)
 
 ```
-![alt](../../assets/img/form-table.png)
+
 postData: {
         id: "",
         role_name: "",
