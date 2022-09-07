@@ -40,6 +40,11 @@ const routes = [
     component: Test1,
   },
   {
+    path: "/about",
+    name: "about",
+    component: () => import("@/views/About.vue"),
+  },
+  {
     path: "/map",
     name: "map",
     component: Map,

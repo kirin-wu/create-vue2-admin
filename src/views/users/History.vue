@@ -77,7 +77,7 @@
 }
 </style>
 <script>
-import MtTable from "@/components/table/Index.vue";
+import MtTable from "@/components/Table/Index.vue";
 // import tableData from "~mock/admin/history";
 import { getHistoryApi } from "@/api/history.js";
 export default {

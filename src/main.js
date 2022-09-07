@@ -19,10 +19,10 @@ window._AMapSecurityConfig = {
 };
 
 // 配置 全局组件 form组件 table组件 card组件 page组件
-import MyForm from "@/components/form/Index";
-import MyTable from "@/components/table/Index";
-import MtCard from "@/components/card/Index";
-import MtPage from "@/components/page/Index";
+import MyForm from "@/components/Form/Index";
+import MyTable from "@/components/Table/Index";
+import MyCard from "@/components/Card/Index";
+import MyPage from "@/components/Page/Index";
 Vue.use({
   install() {
     Vue.component("my-form", MyForm);
@@ -35,12 +35,12 @@ Vue.use({
 });
 Vue.use({
   install() {
-    Vue.component("MtCard", MtCard);
+    Vue.component("my-card", MyCard);
   },
 });
 Vue.use({
   install() {
-    Vue.component("MtPage", MtPage);
+    Vue.component("my-page", MyPage);
   },
 });
 

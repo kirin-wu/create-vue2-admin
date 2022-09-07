@@ -65,7 +65,7 @@
               v-for="(item, index) in formBtns"
               :key="index"
               :type="item.type"
-              size="mudium"
+              :size="formSize"
               @click="handleButton(item.content)"
             >
               {{ item.content }}
@@ -77,7 +77,7 @@
   </el-form>
 </template>
 <script>
-import MySelect from "../mySelect/index.vue";
+import MySelect from "@/components/Select/index";
 export default {
   components: {
     MySelect,
@@ -116,6 +116,14 @@ export default {
     lineNum: {
       type: Number,
       default: 0,
+    },
+    pull: {
+      type: Number,
+      default: null,
+    },
+    push: {
+      type: Number,
+      default: null,
     },
   },
   data() {

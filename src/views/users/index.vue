@@ -97,7 +97,7 @@
 }
 </style>
 <script>
-import MtTable from "@/components/table/Index.vue";
+import MtTable from "@/components/Table/Index.vue";
 // import tableData from "~mock/users/index";
 import Edit from "./components/Edit.vue";
 import EditRoles from "./components/EditRoles.vue";
