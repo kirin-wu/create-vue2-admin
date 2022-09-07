@@ -21,7 +21,7 @@ export default {
     activeIndex: {
       handler() {
         if (!this.activeIndex) return;
-        let start = (this.activeIndex - 3) * 10;
+        let start = (this.activeIndex - 1) * 10;
         let end = (parseInt(this.activeIndex) + 3) * 10;
         if (start < 0) start = 0;
         console.log("index变化了", start, end);
